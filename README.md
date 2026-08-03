@@ -241,7 +241,7 @@ This repository aligns with internationally recognized security standards.
 </a>
 
 <a href="mailto:info.belalansari@gmail.com">
-<img src="https://img.shields.io/badge/Email-belalansari.bd%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white">
+<img src="https://img.shields.io/badge/Email-info.belalansari%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white">
 </a>
 
 </p>
