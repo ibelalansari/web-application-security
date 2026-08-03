@@ -1,3 +1,13 @@
+<p align="center">
+  <img src="assets/github-banner.png" alt="Belal Ansari" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=ibelalansari&label=Profile%20Views&color=0A66C2&style=for-the-badge" alt="Profile Views" />
+</p>
+
+<h1 align="center">Belal Ansari</h1>
+
 # Web Application Security
 
 > Web Application Security focuses on identifying, assessing, and mitigating security vulnerabilities that affect web applications, APIs, and supporting technologies.
