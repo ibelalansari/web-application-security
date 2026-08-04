@@ -1,54 +1,105 @@
 # SQL Injection Vulnerability in WHERE Clause Allowing Retrieval of Hidden Data
 
-## Overview
-
-This lab demonstrates a classic SQL Injection vulnerability in the `WHERE` clause of an SQL query. By manipulating user-controlled input, an attacker can modify the application's SQL query to retrieve hidden records that should not normally be accessible.
-
-The objective of this lab is to identify the injection point, exploit the vulnerability, and retrieve all hidden products from the database.
+> **PortSwigger Web Security Academy** lab demonstrating how an SQL Injection vulnerability in a `WHERE` clause can expose hidden data that should not be accessible to users.
 
 ---
 
-# Lab Information
+## Lab Information
 
-| Item | Details |
-|------|---------|
+| Field | Value |
+|-------|-------|
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
+| Technique | SQL Injection in WHERE Clause |
 | Difficulty | Apprentice |
-| Lab | SQL injection vulnerability in WHERE clause allowing retrieval of hidden data |
 | Status | ✅ Solved |
 
 ---
 
-# Objective
+## Overview
 
-Retrieve hidden products by exploiting an SQL Injection vulnerability in the application's `WHERE` clause.
+This lab demonstrates a classic SQL Injection vulnerability caused by insecure handling of user input within the `WHERE` clause of an SQL query.
+
+By manipulating the vulnerable parameter, it is possible to modify the application's SQL logic and retrieve records that were intentionally hidden from users.
+
+This exercise highlights the importance of secure query construction and demonstrates how a seemingly simple injection can compromise application data confidentiality.
 
 ---
 
-# Vulnerability Overview
+## Objective
 
-The application constructs an SQL query using unsanitized user input received from the `category` parameter.
+- Identify the SQL Injection vulnerability.
+- Manipulate the vulnerable `WHERE` clause.
+- Retrieve hidden products from the database.
+- Understand the impact of insecure SQL query construction.
+- Document the exploitation process.
 
-Original query:
+---
+
+## Tools Used
+
+- Burp Suite Professional
+- Burp Repeater
+- Firefox
+- PortSwigger Web Security Academy
+
+---
+
+# Methodology
+
+## Step 1 — Browse the Application
+
+Navigate to the vulnerable **Gifts** category.
+
+**Screenshot**
+
+![](screenshots/01-homepage.png)
+
+---
+
+## Step 2 — Intercept the HTTP Request
+
+Capture the request using Burp Suite Proxy.
+
+**Screenshot**
+
+![](screenshots/02-burp-request.png)
+
+---
+
+## Step 3 — Inject the SQL Payload
+
+Modify the vulnerable `category` parameter with the following payload:
+
+```sql
+' OR 1=1--
+```
+
+The injected condition always evaluates to **TRUE**, causing the application to return all products, including hidden entries.
+
+**Screenshot**
+
+![](screenshots/03-payload.png)
+
+---
+
+## Step 4 — Verify Lab Completion
+
+After submitting the payload, the hidden products become visible and the lab is successfully completed.
+
+**Screenshot**
+
+![](screenshots/04-lab-solved.png)
+
+---
+
+# Original SQL Query
 
 ```sql
 SELECT * FROM products
 WHERE category='Gifts'
 AND released=1;
 ```
-
-Because user input is directly concatenated into the SQL statement, an attacker can inject additional SQL syntax.
-
----
-
-# Methodology
-
-1. Intercept the request using Burp Suite Professional.
-2. Identify the vulnerable `category` parameter.
-3. Inject an SQL payload to terminate the original query.
-4. Remove the application's filtering condition.
-5. Retrieve all available products, including hidden entries.
 
 ---
 
@@ -58,7 +109,7 @@ Because user input is directly concatenated into the SQL statement, an attacker 
 ' OR 1=1--
 ```
 
-Example request:
+Example HTTP Request
 
 ```http
 GET /filter?category=Gifts'+OR+1=1--
@@ -66,55 +117,56 @@ GET /filter?category=Gifts'+OR+1=1--
 
 ---
 
-# Tools Used
-
-- Burp Suite Professional
-- Firefox Developer Edition
-- PortSwigger Web Security Academy
-
----
-
-# Screenshots
-
-Store screenshots inside:
-
-```
-screenshots/
-├── 01-homepage.png
-├── 02-burp-request.png
-├── 03-payload.png
-└── 04-lab-solved.png
-```
-
----
-
 # Findings
 
 - SQL Injection vulnerability confirmed.
-- User input was not properly sanitized.
+- User-controlled input was concatenated directly into the SQL query.
 - Hidden products became accessible.
-- The application trusted user-controlled input.
+- Application logic was successfully manipulated.
+- Input validation and parameterized queries were absent.
 
 ---
 
 # Impact
 
-An attacker could potentially:
+A successful attacker could potentially:
 
-- Retrieve unauthorized data
-- Bypass application restrictions
-- Enumerate database contents
-- Prepare for further SQL Injection attacks
+- Retrieve unauthorized information
+- Access hidden application content
+- Enumerate database records
+- Facilitate further SQL Injection attacks
+- Compromise application confidentiality
+
+---
+
+# Key Learning
+
+- SQL Injection can alter application logic by modifying the `WHERE` clause.
+- A single vulnerable parameter can expose sensitive information.
+- Parameterized queries are the most effective defense against SQL Injection.
+- Understanding SQL query logic is essential for both attackers and defenders.
 
 ---
 
 # Mitigation
 
 - Use parameterized queries (Prepared Statements).
-- Avoid dynamic SQL query construction.
-- Implement server-side input validation.
-- Apply the principle of least privilege to database accounts.
-- Perform regular security testing.
+- Never concatenate user input into SQL queries.
+- Validate and sanitize all user input.
+- Apply the Principle of Least Privilege.
+- Suppress detailed SQL error messages.
+- Conduct regular application security assessments.
+
+---
+
+# Skills Practiced
+
+- SQL Injection
+- WHERE Clause Manipulation
+- Burp Suite Proxy
+- Burp Repeater
+- HTTP Request Analysis
+- Manual Web Application Testing
 
 ---
 
@@ -122,10 +174,11 @@ An attacker could potentially:
 
 - PortSwigger Web Security Academy
 - OWASP SQL Injection Prevention Cheat Sheet
-- OWASP Top 10 – Injection
+- OWASP Web Security Testing Guide (WSTG)
+- CWE-89: SQL Injection
 
 ---
 
 # Disclaimer
 
-This lab was completed in an authorized laboratory environment for educational and research purposes only.
+This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational and research purposes.
