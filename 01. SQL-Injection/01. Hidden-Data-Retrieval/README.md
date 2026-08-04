@@ -1,6 +1,14 @@
 # SQL Injection Vulnerability in WHERE Clause Allowing Retrieval of Hidden Data
 
-> **PortSwigger Web Security Academy** lab demonstrating how an SQL Injection vulnerability in a `WHERE` clause can expose hidden data that should not be accessible to users.
+> **PortSwigger Web Security Academy** — SQL Injection Lab Write-up
+
+---
+
+## Overview
+
+This lab demonstrates how a vulnerable SQL query can be manipulated through the `category` parameter to retrieve hidden records from the database.
+
+The application concatenates user input directly into a SQL `WHERE` clause, allowing an attacker to modify the query logic and access data that should remain hidden.
 
 ---
 
@@ -10,29 +18,31 @@
 |-------|-------|
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
-| Technique | SQL Injection in WHERE Clause |
+| Technique | WHERE Clause SQL Injection |
 | Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-## Overview
+## Objective
 
-This lab demonstrates a classic SQL Injection vulnerability caused by insecure handling of user input within the `WHERE` clause of an SQL query.
-
-By manipulating the vulnerable parameter, it is possible to modify the application's SQL logic and retrieve records that were intentionally hidden from users.
-
-This exercise highlights the importance of secure query construction and demonstrates how a seemingly simple injection can compromise application data confidentiality.
+Exploit the vulnerable `category` parameter to retrieve hidden products from the application's database.
 
 ---
 
-## Objective
+## Vulnerability
 
-- Identify the SQL Injection vulnerability.
-- Manipulate the vulnerable `WHERE` clause.
-- Retrieve hidden products from the database.
-- Understand the impact of insecure SQL query construction.
-- Document the exploitation process.
+The application builds the SQL query using unsanitized user input.
+
+Original query:
+
+```sql
+SELECT * FROM products
+WHERE category='Gifts'
+AND released=1;
+```
+
+Because the input is not properly sanitized, additional SQL syntax can be injected.
 
 ---
 
@@ -45,71 +55,71 @@ This exercise highlights the importance of secure query construction and demonst
 
 ---
 
-# Methodology
+## Methodology
 
-## Step 1 — Browse the Application
+### Step 1 — Capture the Request
 
-Navigate to the vulnerable **Gifts** category.
-
-**Screenshot**
-
-![](screenshots/01-homepage.png)
-
----
-
-## Step 2 — Intercept the HTTP Request
-
-Capture the request using Burp Suite Proxy.
+Intercept the request using Burp Suite Proxy.
 
 **Screenshot**
 
-![](screenshots/02-burp-request.png)
+![Burp Proxy History](screenshots/01-burp-proxy-history.png)
 
 ---
 
-## Step 3 — Inject the SQL Payload
+### Step 2 — Send to Burp Repeater
 
-Modify the vulnerable `category` parameter with the following payload:
+Forward the request to Burp Repeater for manual testing.
+
+**Screenshot**
+
+![Burp Repeater Request](screenshots/02-burp-repeater-request.png)
+
+---
+
+### Step 3 — Observe the Original Response
+
+Review the application's normal response before testing.
+
+**Screenshot**
+
+![Original Response](screenshots/03-burp-repeater-render.png)
+
+---
+
+### Step 4 — Inject the SQL Payload
+
+Inject the following payload into the `category` parameter.
 
 ```sql
 ' OR 1=1--
 ```
 
-The injected condition always evaluates to **TRUE**, causing the application to return all products, including hidden entries.
+The injected payload causes the SQL query to return all products, including hidden records.
 
 **Screenshot**
 
-![](screenshots/03-payload.png)
+![SQL Injection Payload](screenshots/04-sqli-payload.png)
 
 ---
 
-## Step 4 — Verify Lab Completion
+### Step 5 — Verify Lab Completion
 
-After submitting the payload, the hidden products become visible and the lab is successfully completed.
+The application returns all hidden products and the lab is successfully completed.
 
 **Screenshot**
 
-![](screenshots/04-lab-solved.png)
+![Lab Solved](screenshots/05-lab-solved.png)
 
 ---
 
-# Original SQL Query
-
-```sql
-SELECT * FROM products
-WHERE category='Gifts'
-AND released=1;
-```
-
----
-
-# Payload Used
+## Payload Used
 
 ```sql
 ' OR 1=1--
 ```
 
-Example HTTP Request
+Example request:
 
 ```http
 GET /filter?category=Gifts'+OR+1=1--
@@ -117,49 +127,37 @@ GET /filter?category=Gifts'+OR+1=1--
 
 ---
 
-# Findings
+## Findings
 
 - SQL Injection vulnerability confirmed.
-- User-controlled input was concatenated directly into the SQL query.
+- Unsanitized user input modified the SQL query.
 - Hidden products became accessible.
-- Application logic was successfully manipulated.
-- Input validation and parameterized queries were absent.
+- Business logic restrictions were bypassed.
 
 ---
 
-# Impact
+## Impact
 
-A successful attacker could potentially:
+An attacker could potentially:
 
+- Access hidden records
 - Retrieve unauthorized information
-- Access hidden application content
-- Enumerate database records
-- Facilitate further SQL Injection attacks
-- Compromise application confidentiality
+- Bypass application restrictions
+- Enumerate sensitive database content
 
 ---
 
-# Key Learning
-
-- SQL Injection can alter application logic by modifying the `WHERE` clause.
-- A single vulnerable parameter can expose sensitive information.
-- Parameterized queries are the most effective defense against SQL Injection.
-- Understanding SQL query logic is essential for both attackers and defenders.
-
----
-
-# Mitigation
+## Mitigation
 
 - Use parameterized queries (Prepared Statements).
 - Never concatenate user input into SQL queries.
 - Validate and sanitize all user input.
-- Apply the Principle of Least Privilege.
-- Suppress detailed SQL error messages.
-- Conduct regular application security assessments.
+- Apply the principle of least privilege.
+- Perform regular security testing.
 
 ---
 
-# Skills Practiced
+## Skills Practiced
 
 - SQL Injection
 - WHERE Clause Manipulation
@@ -170,7 +168,7 @@ A successful attacker could potentially:
 
 ---
 
-# References
+## References
 
 - PortSwigger Web Security Academy
 - OWASP SQL Injection Prevention Cheat Sheet
@@ -179,6 +177,6 @@ A successful attacker could potentially:
 
 ---
 
-# Disclaimer
+## Disclaimer
 
-This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational and research purposes.
+This lab was completed exclusively within the PortSwigger Web Security Academy environment for educational purposes. All testing was performed only on authorized systems.
