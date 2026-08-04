@@ -1,5 +1,9 @@
 # SQL Injection UNION Attack – Retrieving Data from Other Tables
 
+> **PortSwigger Web Security Academy** lab demonstrating how a UNION-based SQL Injection can be used to enumerate database objects and retrieve sensitive information from another table.
+
+---
+
 ## Lab Information
 
 | Field | Value |
@@ -7,30 +11,45 @@
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
 | Technique | UNION-Based SQL Injection |
+| Lab | Retrieving Data from Other Tables |
 | Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-## Objective
+## Overview
 
-Use a UNION-based SQL injection to retrieve sensitive information from another database table (`users`) and obtain the administrator credentials.
+Once the correct number of columns and compatible data types have been identified, a UNION-based SQL Injection can be used to query other database tables.
+
+In this lab, the vulnerable application exposes data from the hidden `users` table, allowing administrator credentials to be retrieved.
 
 ---
 
-## Lab Scenario
+## Objective
 
-The application is vulnerable to SQL injection through the product category parameter.
+- Identify UNION-compatible columns
+- Enumerate database tables
+- Identify sensitive columns
+- Retrieve administrator credentials
+- Authenticate as the administrator
+- Complete the lab
 
-By exploiting the vulnerability with a UNION SELECT statement, it is possible to query the hidden `users` table and retrieve usernames and passwords stored in the database.
+---
+
+## Tools Used
+
+- Burp Suite Professional
+- Burp Repeater
+- Firefox
+- PortSwigger Web Security Academy
 
 ---
 
 ## Methodology
 
-### Step A – Capture the Request
+### Step 1 — Intercept the Request
 
-Capture the vulnerable request using Burp Suite.
+Capture the vulnerable request using Burp Suite Proxy.
 
 **Screenshot**
 
@@ -38,9 +57,9 @@ Capture the vulnerable request using Burp Suite.
 
 ---
 
-### Step B – Determine the Number of Columns
+### Step 2 — Determine the Number of Columns
 
-Identify the number of columns returned by the original query.
+Identify the correct number of columns returned by the original SQL query.
 
 **Screenshot**
 
@@ -48,9 +67,9 @@ Identify the number of columns returned by the original query.
 
 ---
 
-### Step C – Verify UNION Compatibility
+### Step 3 — Verify UNION Compatibility
 
-Confirm that the UNION query executes successfully with the correct number of columns.
+Verify that the UNION query executes successfully using the correct number of columns.
 
 **Screenshot**
 
@@ -58,9 +77,9 @@ Confirm that the UNION query executes successfully with the correct number of co
 
 ---
 
-### Step D – Identify the Users Table
+### Step 4 — Identify the Users Table
 
-Retrieve or identify the hidden `users` table that contains account information.
+Enumerate the database tables and locate the `users` table.
 
 **Screenshot**
 
@@ -68,9 +87,9 @@ Retrieve or identify the hidden `users` table that contains account information.
 
 ---
 
-### Step E – Identify Username and Password Columns
+### Step 5 — Identify Username and Password Columns
 
-Determine which columns contain usernames and passwords.
+Enumerate the columns within the `users` table to identify sensitive fields.
 
 **Screenshot**
 
@@ -78,9 +97,9 @@ Determine which columns contain usernames and passwords.
 
 ---
 
-### Step F – Retrieve Administrator Credentials
+### Step 6 — Retrieve Administrator Credentials
 
-Extract the administrator username and password using a UNION SELECT statement.
+Extract usernames and passwords from the `users` table using a UNION SELECT statement.
 
 **Screenshot**
 
@@ -88,9 +107,9 @@ Extract the administrator username and password using a UNION SELECT statement.
 
 ---
 
-### Step G – Login as Administrator
+### Step 7 — Login as Administrator
 
-Use the retrieved administrator credentials to authenticate successfully.
+Authenticate successfully using the retrieved administrator credentials.
 
 **Screenshot**
 
@@ -98,9 +117,9 @@ Use the retrieved administrator credentials to authenticate successfully.
 
 ---
 
-### Step H – Lab Solved
+### Step 8 — Verify Lab Completion
 
-After successful authentication, the lab is marked as solved.
+The application confirms that the lab has been solved successfully.
 
 **Screenshot**
 
@@ -108,34 +127,58 @@ After successful authentication, the lab is marked as solved.
 
 ---
 
-## Payloads Used
+## Payloads
 
 See:
 
-```
-payloads.txt
-```
+**payloads.txt**
+
+---
+
+## Key Learning
+
+- UNION-based SQL Injection can retrieve data from arbitrary database tables.
+- Successful exploitation requires matching the original query's column count and data types.
+- Database enumeration is a critical step before extracting sensitive information.
+- Exposed credentials can lead to complete account compromise.
+- Parameterized queries effectively prevent SQL Injection attacks.
+
+---
+
+## Mitigation
+
+- Use parameterized queries (Prepared Statements).
+- Never concatenate user input into SQL statements.
+- Validate and sanitize user input.
+- Restrict database account privileges.
+- Suppress detailed SQL error messages.
+- Conduct regular application security testing.
 
 ---
 
 ## Skills Practiced
 
+- SQL Injection
 - UNION-Based SQL Injection
-- Determining column count
-- UNION SELECT exploitation
-- Database enumeration
-- Table enumeration
-- Column enumeration
-- Credential extraction
-- Authentication using extracted credentials
+- Database Enumeration
+- Table Enumeration
+- Column Enumeration
+- Credential Extraction
 - Burp Suite Repeater
-- PortSwigger Web Security Academy Labs
+- HTTP Request Analysis
+- Manual Web Application Testing
 
 ---
 
-## Key Takeaways
+## References
 
-- UNION attacks allow data extraction from arbitrary tables.
-- Correct column count and compatible data types are required.
-- Sensitive information such as usernames and passwords can be exposed through insecure SQL queries.
-- Proper input validation and parameterized queries are essential to prevent SQL injection.
+- PortSwigger Web Security Academy
+- OWASP Web Security Testing Guide (WSTG)
+- OWASP SQL Injection Prevention Cheat Sheet
+- CWE-89: SQL Injection
+
+---
+
+## Disclaimer
+
+This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational purposes.

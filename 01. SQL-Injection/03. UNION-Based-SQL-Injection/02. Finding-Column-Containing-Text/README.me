@@ -1,49 +1,40 @@
 # SQL Injection UNION Attack: Finding a Column Containing Text
 
-> **PortSwigger Web Security Academy Lab** demonstrating how to identify a column capable of displaying string values using a UNION-based SQL Injection.
+> **PortSwigger Web Security Academy** lab demonstrating how to identify which column accepts string values in a UNION-based SQL Injection attack.
 
 ---
 
-# Overview
+## Lab Information
 
-This lab demonstrates how to identify which column in a SQL query can display text values. Before sensitive data can be extracted using a UNION-based SQL Injection, it is necessary to determine both the number of columns returned by the original query and which column supports string data.
-
----
-
-# Objective
-
-- Determine the number of columns returned by the query
-- Identify a column that accepts string values
-- Display arbitrary text within the application's response
-- Complete the lab using a UNION-based SQL Injection
-
----
-
-# Lab Information
-
-| Item | Value |
-|------|-------|
-| Category | SQL Injection |
-| Technique | UNION-based SQL Injection |
-| Difficulty | Apprentice |
+| Field | Value |
+|-------|-------|
 | Platform | PortSwigger Web Security Academy |
+| Category | SQL Injection |
+| Technique | UNION-Based SQL Injection |
+| Lab | Finding a Column Containing Text |
+| Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-# Vulnerability
+## Overview
 
-The application fails to properly sanitize user-controlled input before constructing a SQL query. By injecting a `UNION SELECT` statement, additional data can be returned in the application's response.
+After determining the number of columns returned by the original SQL query, the next step is identifying which column can display string values.
 
-To successfully exploit the vulnerability, the attacker must:
-
-- Determine the correct number of columns
-- Identify which column supports string values
-- Inject arbitrary text into the application's response
+This is a critical step because UNION-based SQL Injection requires at least one output column capable of rendering text before sensitive information can be extracted from the database.
 
 ---
 
-# Tools Used
+## Objective
+
+- Confirm the number of returned columns
+- Identify the text-compatible column
+- Verify successful string rendering
+- Complete the lab
+
+---
+
+## Tools Used
 
 - Burp Suite Professional
 - Burp Repeater
@@ -54,121 +45,105 @@ To successfully exploit the vulnerability, the attacker must:
 
 # Methodology
 
-## 1. Intercept the Request
+## Step 1 — Intercept the Request
 
-Capture the request to the **Gifts** category using Burp Suite.
-
-**Screenshot**
-
-```
-screenshots/01-proxy-http-history.png
-```
-
----
-
-## 2. Review the Original Response
-
-Forward the request to Repeater and inspect the application's normal response.
+Capture the vulnerable request using Burp Suite Proxy.
 
 **Screenshot**
 
-```
-screenshots/02-original-response.png
-```
+![](screenshots/01-proxy-http-history.png)
 
 ---
 
-## 3. Test an Invalid UNION Payload
+## Step 2 — Review the Original Response
 
-Inject a UNION statement containing an invalid text placement.
+Forward the request to Burp Repeater and inspect the normal application response.
 
-Example:
+**Screenshot**
+
+![](screenshots/02-original-response.png)
+
+---
+
+## Step 3 — Test an Invalid Payload
+
+Inject a string into an incompatible column.
+
+Example payload:
 
 ```sql
 ' UNION SELECT 'abcd',NULL--
 ```
 
-The server returns an error because the injected text is placed into a column that does not accept string values.
+The server returns an error because the selected column does not accept string values.
 
 **Screenshot**
 
-```
-screenshots/03-invalid-payload.png
-```
+![](screenshots/03-invalid-payload.png)
 
 ---
 
-## 4. Identify the Text-Compatible Column
+## Step 4 — Identify the Text-Compatible Column
 
-Move the text value to another column.
+Move the string value to another column.
 
-Example:
+Example payload:
 
 ```sql
 ' UNION SELECT NULL,'abcd'--
 ```
 
-The application successfully displays the injected string, confirming that the second column accepts text.
+The application successfully displays the injected text, confirming that the second column accepts string values.
 
 **Screenshot**
 
-```
-screenshots/04-valid-text-column.png
-```
+![](screenshots/04-valid-text-column.png)
 
 ---
 
-## 5. Submit the Final Payload
+## Step 5 — Submit the Final Payload
 
-Replace the test string with the value requested by the lab.
+Replace the test string with the value required by the lab.
 
-Example:
+Example payload:
 
 ```sql
 ' UNION SELECT NULL,'YOUR-LAB-STRING'--
 ```
 
-The application displays the required string in the response.
+The application reflects the supplied string and the lab objective is fulfilled.
 
 **Screenshot**
 
-```
-screenshots/05-final-payload.png
-```
+![](screenshots/05-final-payload.png)
 
 ---
 
-## 6. Verify Lab Completion
+## Step 6 — Verify Lab Completion
 
-After submitting the correct payload, the lab is marked as solved.
+The lab is successfully completed.
 
 **Screenshot**
 
-```
-screenshots/06-lab-solved.png
-```
+![](screenshots/06-lab-solved.png)
 
 ---
 
 # Payloads Used
 
-## Invalid Payload
+### Invalid Payload
 
 ```sql
 ' UNION SELECT 'abcd',NULL--
 ```
 
----
-
-## Valid Payload
+### Valid Payload
 
 ```sql
 ' UNION SELECT NULL,'abcd'--
 ```
 
----
-
-## Final Payload
+### Final Payload
 
 ```sql
 ' UNION SELECT NULL,'YOUR-LAB-STRING'--
@@ -179,9 +154,32 @@ screenshots/06-lab-solved.png
 # Key Learning
 
 - UNION-based SQL Injection requires the correct number of columns.
-- Text values must be placed into a compatible column.
-- NULL values simplify column enumeration because they are compatible with most SQL data types.
-- Successfully identifying a text-compatible column is a prerequisite for extracting sensitive information using UNION-based attacks.
+- At least one output column must support string values.
+- Testing columns individually helps identify compatible data types.
+- `NULL` values simplify testing because they are compatible with most SQL data types.
+- Identifying a text-compatible column is an essential prerequisite before extracting sensitive information from database tables.
+
+---
+
+# Mitigation
+
+- Use parameterized queries (Prepared Statements).
+- Never concatenate user input into SQL queries.
+- Validate and sanitize all user input.
+- Hide detailed database error messages.
+- Apply the principle of least privilege to database accounts.
+
+---
+
+# Skills Practiced
+
+- SQL Injection
+- UNION-Based SQL Injection
+- Column Enumeration
+- String Data Type Identification
+- Burp Suite Repeater
+- HTTP Request Analysis
+- Manual Web Application Testing
 
 ---
 
@@ -189,11 +187,11 @@ screenshots/06-lab-solved.png
 
 - PortSwigger Web Security Academy
 - OWASP Web Security Testing Guide (WSTG)
-- OWASP Top 10
+- OWASP SQL Injection Prevention Cheat Sheet
 - CWE-89: SQL Injection
 
 ---
 
 # Disclaimer
 
-This write-up documents an authorized PortSwigger Web Security Academy laboratory exercise. All testing was performed in a controlled environment for educational purposes only.
+This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational and research purposes.

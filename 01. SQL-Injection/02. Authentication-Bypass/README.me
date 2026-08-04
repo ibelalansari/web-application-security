@@ -1,26 +1,36 @@
 # SQL Injection Authentication Bypass
 
+> **PortSwigger Web Security Academy** lab demonstrating how a SQL Injection vulnerability in a login form can allow authentication to be bypassed.
+
+---
+
 ## Lab Information
 
 | Field | Value |
 |-------|-------|
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
-| Lab | SQL Injection Authentication Bypass |
+| Technique | Authentication Bypass |
 | Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-## Objective
+## Overview
 
-Bypass the application's login authentication by exploiting an SQL Injection vulnerability in the login form.
+Authentication mechanisms should securely validate user credentials before granting access. When user input is directly incorporated into SQL queries, attackers may manipulate the query logic to bypass authentication and gain unauthorized access.
+
+This lab demonstrates how SQL Injection can be used to log in as the administrator without knowing the correct password.
 
 ---
 
-## Lab Scenario
+## Objective
 
-The login functionality is vulnerable to SQL Injection. The objective is to authenticate as the administrator without knowing the password.
+- Identify SQL Injection in the login form
+- Intercept and modify authentication requests
+- Craft an authentication bypass payload
+- Log in as the administrator
+- Document the complete exploitation process
 
 ---
 
@@ -35,7 +45,7 @@ The login functionality is vulnerable to SQL Injection. The objective is to auth
 
 # Methodology
 
-## Step 1 — Capture Login Request
+## Step 1 — Capture the Login Request
 
 Intercept the login request using Burp Suite Proxy.
 
@@ -45,9 +55,9 @@ Intercept the login request using Burp Suite Proxy.
 
 ---
 
-## Step 2 — Original Login Request
+## Step 2 — Review the Original Request
 
-Forward the request to Burp Repeater for testing.
+Forward the captured request to Burp Repeater and review the original HTTP request.
 
 **Screenshot**
 
@@ -55,9 +65,9 @@ Forward the request to Burp Repeater for testing.
 
 ---
 
-## Step 3 — Observe Normal Response
+## Step 3 — Observe the Original Response
 
-Review the application's normal response before testing.
+Send the request without modification and observe the normal server response.
 
 **Screenshot**
 
@@ -67,7 +77,7 @@ Review the application's normal response before testing.
 
 ## Step 4 — Prepare the Request
 
-The login request is ready for manual SQL Injection testing.
+Prepare the intercepted request for SQL Injection testing in Burp Repeater.
 
 **Screenshot**
 
@@ -75,9 +85,9 @@ The login request is ready for manual SQL Injection testing.
 
 ---
 
-## Step 5 — Test Invalid Payload
+## Step 5 — Test an Invalid Payload
 
-Inject a payload that produces an SQL syntax error.
+Inject an invalid payload to verify that the application is vulnerable to SQL Injection.
 
 Example:
 
@@ -96,9 +106,9 @@ Result:
 
 ---
 
-## Step 6 — Verify SQL Error
+## Step 6 — Confirm the SQL Error
 
-The application returns an Internal Server Error, confirming SQL Injection.
+The server returns an SQL error, confirming that the login functionality is vulnerable.
 
 **Screenshot**
 
@@ -106,23 +116,17 @@ The application returns an Internal Server Error, confirming SQL Injection.
 
 ---
 
-## Step 7 — Authentication Bypass Payload
+## Step 7 — Perform Authentication Bypass
 
-Use an SQL Injection payload to bypass authentication.
+Inject a payload to terminate the SQL statement and comment out the password verification.
 
-Example payload:
+Payload:
 
 ```sql
 administrator'--
 ```
 
-or
-
-```sql
-' OR 1=1--
-```
-
-(depending on the lab implementation)
+The application ignores the password check and authenticates as the administrator.
 
 **Screenshot**
 
@@ -130,9 +134,9 @@ or
 
 ---
 
-## Step 8 — Successful Authentication
+## Step 8 — Verify Successful Authentication
 
-The application accepts the injected payload and authenticates successfully.
+The application successfully authenticates the administrator account.
 
 **Screenshot**
 
@@ -156,29 +160,26 @@ Authentication is successfully bypassed and the lab is completed.
 administrator'--
 ```
 
-or
-
-```sql
-' OR 1=1--
-```
-
 ---
 
 # Key Learning
 
-- SQL Injection can bypass authentication when user input is concatenated into SQL queries.
-- SQL comments (`--`) can ignore the password verification.
-- Authentication mechanisms should never trust raw user input.
+- Login forms are common targets for SQL Injection attacks.
+- Unsanitized user input can completely bypass authentication.
+- SQL comments (`--`) can remove password verification from the query.
+- Prepared statements effectively prevent this type of vulnerability.
+- Secure authentication depends on proper input handling and parameterized SQL queries.
 
 ---
 
 # Mitigation
 
 - Use parameterized queries (Prepared Statements).
+- Never concatenate user input into SQL statements.
 - Validate and sanitize user input.
-- Implement least-privilege database accounts.
-- Avoid exposing SQL errors.
-- Apply secure authentication and monitoring.
+- Suppress detailed SQL error messages.
+- Apply least-privilege database permissions.
+- Monitor authentication logs for suspicious login attempts.
 
 ---
 
@@ -188,20 +189,20 @@ or
 - Authentication Bypass
 - Burp Suite Proxy
 - Burp Repeater
+- HTTP Request Analysis
 - Manual Web Application Testing
-- HTTP Request Manipulation
 
 ---
 
 # References
 
 - PortSwigger Web Security Academy
-- OWASP SQL Injection Prevention Cheat Sheet
 - OWASP Web Security Testing Guide (WSTG)
+- OWASP SQL Injection Prevention Cheat Sheet
 - CWE-89: SQL Injection
 
 ---
 
 # Disclaimer
 
-This lab was completed exclusively within the PortSwigger Web Security Academy environment for educational purposes. All testing was performed only on authorized systems.
+This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational purposes.
