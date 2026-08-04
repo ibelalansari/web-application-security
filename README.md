@@ -228,26 +228,6 @@ This repository aligns with internationally recognized security standards.
 
 ---
 
-# Connect
-
-<p align="left">
-
-<a href="https://linkedin.com/in/ibelalansari">
-<img src="https://img.shields.io/badge/LinkedIn-Belal%20Ansari-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white">
-</a>
-
-<a href="https://github.com/ibelalansari">
-<img src="https://img.shields.io/badge/GitHub-ibelalansari-181717?style=for-the-badge&logo=github&logoColor=white">
-</a>
-
-<a href="mailto:info.belalansari@gmail.com">
-<img src="https://img.shields.io/badge/Email-info.belalansari%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white">
-</a>
-
-</p>
-
----
-
 # Disclaimer
 
 All activities documented in this repository were performed exclusively within authorized laboratory environments or intentionally vulnerable applications for educational, research, and professional development purposes.
