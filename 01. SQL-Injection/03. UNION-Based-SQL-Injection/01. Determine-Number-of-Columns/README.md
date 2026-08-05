@@ -1,26 +1,26 @@
-# Determine the Number of Columns Returned by the Query
+# SQL Injection - Determine Number of Columns
 
 ## Lab Information
 
-- **Category:** SQL Injection
-- **Technique:** UNION-Based SQL Injection
-- **Difficulty:** Practitioner
-- **Platform:** PortSwigger Web Security Academy
-- **Lab:** Determine the Number of Columns Returned by the Query
+| Field | Value |
+|-------|-------|
+| Platform | PortSwigger Web Security Academy |
+| Module | SQL Injection |
+| Lab | Determine Number of Columns |
+| Difficulty | Apprentice |
+| Status | ✅ Solved |
 
 ---
 
 ## Objective
 
-Determine the number of columns returned by the original SQL query using a `UNION SELECT` attack.
+Determine how many columns are returned by the original SQL query using a UNION SELECT attack.
 
 ---
 
-## Vulnerable Parameter
+## Vulnerability
 
-```
-GET /filter?category=Gifts
-```
+SQL Injection
 
 Parameter:
 
@@ -28,170 +28,70 @@ Parameter:
 category
 ```
 
----
+HTTP Method
 
-## Methodology
-
-### Step 1 - Browse the Application
-
-Navigate to the **Gifts** category and capture the request using Burp Suite.
-
-**Screenshot**
-
-![](screenshots/01-http-history.png)
-
----
-
-### Step 2 - Send Request to Repeater
-
-Send the captured request to Burp Repeater for manual testing.
-
-**Screenshot**
-
-![](screenshots/02-send-to-repeater.png)
-
----
-
-### Step 3 - Verify the Original Request
-
-Confirm that the original request returns a normal response.
-
-**Screenshot**
-
-![](screenshots/03-original-request.png)
-
----
-
-### Step 4 - Test for SQL Injection
-
-Append a single quote (`'`) to the parameter.
-
-**Payload**
-
-```sql
-'
+```
+GET
 ```
 
-Response:
+---
 
-- HTTP 500 Internal Server Error
+## Testing Workflow
 
-This indicates the application is vulnerable to SQL Injection.
-
-**Screenshot**
-
-![](screenshots/04-single-quote-error.png)
-
-![](screenshots/05-render-internal-server-error.png)
+1. Capture request using Burp Proxy.
+2. Send request to Repeater.
+3. Confirm SQL Injection with a single quote.
+4. Verify comment syntax.
+5. Test UNION SELECT with increasing NULL values.
+6. Find the correct number of columns.
 
 ---
 
-### Step 5 - Test SQL Comment
-
-Append a SQL comment to terminate the query.
-
-**Payload**
-
-```sql
-'--
-```
-
-The page loads normally, confirming that SQL comments are accepted.
-
-**Screenshot**
-
-![](screenshots/06-comment-test.png)
-
----
-
-### Step 6 - Determine the Number of Columns
-
-Start testing with different numbers of `NULL` values.
-
-#### Payload
-
-```sql
-' UNION SELECT NULL,NULL--
-```
-
-Result
-
-- HTTP 500 Internal Server Error
-
-Only **2 columns** are incorrect.
-
-**Screenshot**
-
-![](screenshots/07-union-select-2-columns-error.png)
-
----
-
-Try again using three NULL values.
-
-#### Payload
+## Successful Payload
 
 ```sql
 ' UNION SELECT NULL,NULL,NULL--
 ```
-
-Result
-
-- HTTP 200 OK
-
-The application accepts three columns.
-
-**Screenshot**
-
-![](screenshots/08-union-select-3-columns-success.png)
 
 ---
 
 ## Result
 
-The original query returns **3 columns**.
+The application accepted the payload.
 
-Successful payload:
+Response:
 
-```sql
-' UNION SELECT NULL,NULL,NULL--
+```
+HTTP/2 200 OK
 ```
 
----
-
-## Lab Status
-
-Successfully solved.
-
-**Screenshot**
-
-![](screenshots/09-lab-solved.png)
+The query returns **3 columns**.
 
 ---
 
-## Key Takeaways
+## Impact
 
-- A single quote (`'`) can reveal SQL Injection vulnerabilities.
-- SQL comments (`--`) help terminate the remaining query.
-- `UNION SELECT` requires the same number of columns as the original query.
-- Using `NULL` is the safest approach when determining column count.
-- HTTP 500 responses usually indicate an incorrect number of columns or SQL syntax errors.
-- HTTP 200 indicates the payload structure is valid.
+Knowing the correct number of columns allows attackers to perform UNION-based SQL Injection and extract data.
 
 ---
 
-## Skills Practiced
+## Mitigation
 
-- SQL Injection Detection
-- UNION-Based SQL Injection
-- Column Count Enumeration
-- Burp Suite Repeater
-- HTTP Response Analysis
-- PortSwigger Web Security Academy
+- Prepared Statements
+- Parameterized Queries
+- Input Validation
+- Least Privilege Database Accounts
 
 ---
 
-## Author
+## Tools Used
 
-**Belal Ansari**
+- Burp Suite Professional
+- Firefox
+- PortSwigger Academy
 
-Cybersecurity | Web Application Security | Ethical Hacking
+---
+
+## Status
+
+✅ Lab Solved
