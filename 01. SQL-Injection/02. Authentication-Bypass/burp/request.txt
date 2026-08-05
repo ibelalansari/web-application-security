@@ -1,0 +1,2 @@
+GET /filter?category=Corporate+gifts HTTP/2
+Host: <academy-host>
