@@ -1,0 +1,6 @@
+HTTP/2 200 OK
+Content-Type: text/html; charset=utf-8
+
+The response returned hidden products after the SQL Injection payload was injected into the category parameter.
+
+Status: Lab Solved
