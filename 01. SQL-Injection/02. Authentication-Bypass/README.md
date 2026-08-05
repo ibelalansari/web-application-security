@@ -1,208 +1,135 @@
-# SQL Injection Authentication Bypass
-
-> **PortSwigger Web Security Academy** lab demonstrating how a SQL Injection vulnerability in a login form can allow authentication to be bypassed.
-
----
+# Lab 02 – Authentication Bypass (Determining Number of Columns)
 
 ## Lab Information
 
-| Field | Value |
-|-------|-------|
+| Item | Value |
+|------|-------|
 | Platform | PortSwigger Web Security Academy |
 | Category | SQL Injection |
-| Technique | Authentication Bypass |
+| Topic | UNION Attack - Determining Number of Columns |
 | Difficulty | Apprentice |
 | Status | ✅ Solved |
 
 ---
 
-## Overview
+# Objective
 
-Authentication mechanisms should securely validate user credentials before granting access. When user input is directly incorporated into SQL queries, attackers may manipulate the query logic to bypass authentication and gain unauthorized access.
-
-This lab demonstrates how SQL Injection can be used to log in as the administrator without knowing the correct password.
+Determine the number of columns returned by the SQL query using a UNION SELECT attack.
 
 ---
 
-## Objective
+# Lab Description
 
-- Identify SQL Injection in the login form
-- Intercept and modify authentication requests
-- Craft an authentication bypass payload
-- Log in as the administrator
-- Document the complete exploitation process
+The application is vulnerable to SQL Injection in the `category` parameter.
+
+To perform UNION attacks successfully, the attacker must first determine the number of columns returned by the original query.
 
 ---
 
-## Tools Used
+# Vulnerability
 
-- Burp Suite Professional
-- Burp Repeater
-- Firefox
-- PortSwigger Web Security Academy
+Type
 
----
+SQL Injection
 
-# Methodology
+Injection Point
 
-## Step 1 — Capture the Login Request
+GET Parameter
 
-Intercept the login request using Burp Suite Proxy.
+Parameter
 
-**Screenshot**
-
-![](screenshots/01-proxy-http-history.png)
+category
 
 ---
 
-## Step 2 — Review the Original Request
+# Testing Process
 
-Forward the captured request to Burp Repeater and review the original HTTP request.
+Started with
 
-**Screenshot**
-
-![](screenshots/02-original-request.png)
-
----
-
-## Step 3 — Observe the Original Response
-
-Send the request without modification and observe the normal server response.
-
-**Screenshot**
-
-![](screenshots/03-original-response.png)
-
----
-
-## Step 4 — Prepare the Request
-
-Prepare the intercepted request for SQL Injection testing in Burp Repeater.
-
-**Screenshot**
-
-![](screenshots/04-repeater-request.png)
-
----
-
-## Step 5 — Test an Invalid Payload
-
-Inject an invalid payload to verify that the application is vulnerable to SQL Injection.
-
-Example:
-
-```sql
-'
 ```
 
-Result:
+' ORDER BY 1--
 
-- HTTP 500 Internal Server Error
-- Indicates the input is processed by the SQL query.
-
-**Screenshot**
-
-![](screenshots/05-invalid-payload.png)
-
----
-
-## Step 6 — Confirm the SQL Error
-
-The server returns an SQL error, confirming that the login functionality is vulnerable.
-
-**Screenshot**
-
-![](screenshots/06-invalid-response.png)
-
----
-
-## Step 7 — Perform Authentication Bypass
-
-Inject a payload to terminate the SQL statement and comment out the password verification.
-
-Payload:
-
-```sql
-administrator'--
 ```
 
-The application ignores the password check and authenticates as the administrator.
+Continue increasing
 
-**Screenshot**
+```
 
-![](screenshots/07-login-bypass-payload.png)
+' ORDER BY 2--
 
----
+' ORDER BY 3--
 
-## Step 8 — Verify Successful Authentication
+' ORDER BY 4--
 
-The application successfully authenticates the administrator account.
+```
 
-**Screenshot**
+Alternatively
 
-![](screenshots/08-successful-response.png)
+```
 
----
+' UNION SELECT NULL--
 
-## Step 9 — Lab Solved
+' UNION SELECT NULL,NULL--
 
-Authentication is successfully bypassed and the lab is completed.
+' UNION SELECT NULL,NULL,NULL--
 
-**Screenshot**
-
-![](screenshots/09-lab-solved.png)
-
----
-
-# Payload Used
-
-```sql
-administrator'--
 ```
 
 ---
 
-# Key Learning
+# Successful Payload
 
-- Login forms are common targets for SQL Injection attacks.
-- Unsanitized user input can completely bypass authentication.
-- SQL comments (`--`) can remove password verification from the query.
-- Prepared statements effectively prevent this type of vulnerability.
-- Secure authentication depends on proper input handling and parameterized SQL queries.
+```
+
+' UNION SELECT NULL,NULL,NULL--
+
+```
+
+---
+
+# Result
+
+The application accepted the payload.
+
+This confirms that the original SQL query returns **3 columns**.
+
+---
+
+# Impact
+
+Knowing the correct number of columns is the first step toward extracting database information using UNION attacks.
 
 ---
 
 # Mitigation
 
-- Use parameterized queries (Prepared Statements).
-- Never concatenate user input into SQL statements.
-- Validate and sanitize user input.
-- Suppress detailed SQL error messages.
-- Apply least-privilege database permissions.
-- Monitor authentication logs for suspicious login attempts.
+- Prepared Statements
+- Parameterized Queries
+- ORM
+- Input Validation
 
 ---
 
-# Skills Practiced
+# Files
 
-- SQL Injection
-- Authentication Bypass
-- Burp Suite Proxy
-- Burp Repeater
-- HTTP Request Analysis
-- Manual Web Application Testing
-
----
-
-# References
-
-- PortSwigger Web Security Academy
-- OWASP Web Security Testing Guide (WSTG)
-- OWASP SQL Injection Prevention Cheat Sheet
-- CWE-89: SQL Injection
+- 01-notes.md
+- 02-payloads/
+- 03-report.md
+- 04-references.md
+- 05-screenshots/
+- 06-burp/
 
 ---
 
-# Disclaimer
+# Tools Used
 
-This write-up documents an authorized laboratory exercise completed within the PortSwigger Web Security Academy. All testing was performed exclusively in a controlled environment for educational purposes.
+- Burp Suite Professional
+- Firefox
+- PortSwigger Academy
+
+---
+
+# Result
+
+✅ Lab Solved
