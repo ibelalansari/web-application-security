@@ -1,0 +1,56 @@
+# IDOR Testing Payloads
+# Lab: User ID Controlled by Request Parameter
+# Context: PortSwigger Web Security Academy
+
+[Original Request]
+
+GET /my-account?id=wiener HTTP/2
+
+
+[Modified Request]
+
+GET /my-account?id=carlos HTTP/2
+
+
+[Parameter Tested]
+
+Parameter: id
+
+
+[Original Value]
+
+wiener
+
+
+[Test Value]
+
+carlos
+
+
+[Testing Method]
+
+1. Capture the authenticated request in Burp Suite.
+2. Send the request to Burp Repeater.
+3. Keep the authenticated session unchanged.
+4. Modify only the object reference in the `id` parameter.
+5. Send the modified request.
+6. Compare the response with the original request.
+
+
+[Expected Secure Behavior]
+
+The application should verify whether the authenticated user
+is authorized to access the requested account.
+
+
+[Observed Lab Behavior]
+
+The modified request returned the requested user's account
+information while the authenticated session remained unchanged.
+
+
+[Conclusion]
+
+The user-controlled `id` parameter allowed unauthorized access
+to another user's account object, demonstrating an IDOR /
+broken object-level authorization vulnerability.
