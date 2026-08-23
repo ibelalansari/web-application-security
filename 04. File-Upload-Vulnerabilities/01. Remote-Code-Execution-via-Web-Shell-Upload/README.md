@@ -1,24 +1,37 @@
 # Remote Code Execution via Web Shell Upload
 
-## Overview
+## Lab Overview
 
-This lab demonstrates a Remote Code Execution (RCE) vulnerability caused by an insecure file-upload mechanism.
+This lab demonstrates a **Remote Code Execution (RCE)** vulnerability caused by an unrestricted file upload mechanism.
 
-The application allows an attacker-controlled PHP file to be uploaded through the avatar functionality. Because the uploaded file remains accessible from a web-accessible location and PHP execution is permitted, the uploaded file can be executed by requesting its URL.
+The application allows an authenticated user to upload an avatar image. However, the upload functionality fails to properly validate the uploaded file type and permits a server-side executable file to be uploaded.
 
-## Lab
+Because the uploaded file is stored inside a web-accessible directory and interpreted by the server, an attacker can achieve server-side code execution.
 
-**Platform:** PortSwigger Web Security Academy
+> **Environment:** PortSwigger Web Security Academy  
+> **Vulnerability:** Unrestricted File Upload  
+> **Impact:** Remote Code Execution  
+> **Severity:** Critical  
+> **Testing Type:** Authorized Security Lab
 
-**Lab:** Remote code execution via web shell upload
-
-**Vulnerability Class:** File Upload Vulnerability
-
-**Impact:** Remote Code Execution
+---
 
 ## Objective
 
-The objective was to identify an insecure file-upload functionality, upload a server-side PHP payload, and demonstrate that the uploaded file is executed by the web server.
+The objective of this lab was to demonstrate how an insecure file upload functionality can be abused to achieve remote code execution.
+
+The testing workflow consisted of:
+
+1. Authenticating to the lab application.
+2. Identifying the avatar upload functionality.
+3. Preparing a server-side PHP payload.
+4. Intercepting the upload request using Burp Suite.
+5. Uploading the PHP file through the vulnerable functionality.
+6. Accessing the uploaded file through its web-accessible path.
+7. Verifying server-side code execution.
+8. Confirming successful lab completion.
+
+---
 
 ## Methodology
 
@@ -26,7 +39,7 @@ The objective was to identify an insecure file-upload functionality, upload a se
 
 First, I authenticated to the lab application using the provided test credentials.
 
-Evidence:
+**Evidence:**
 
 ![Authentication](screenshots/01-authentication.png)
 
@@ -38,11 +51,5 @@ A PHP payload was created to demonstrate server-side code execution.
 
 The payload is stored in:
 
-`payloads/exploit.php`
-
-Payload:
-
-```php
-<?php
-echo file_get_contents('/home/carlos/secret');
-?>
+```text
+payloads/exploit.php

@@ -1,38 +1,54 @@
-# Security Assessment Report
+# Vulnerability Assessment Report
 
-## 1. Finding
+## 1. Executive Summary
 
-**Title:** Remote Code Execution via Insecure File Upload
+A Remote Code Execution (RCE) vulnerability was identified in the application's avatar upload functionality.
 
-**Severity:** Critical
+The application allowed an authenticated user to upload a server-side executable PHP file without adequate validation. The uploaded file was stored in a web-accessible location and subsequently interpreted by the web server.
 
-**Vulnerability Type:** File Upload Vulnerability
+This allowed the uploaded PHP payload to execute server-side code and retrieve data from the application environment.
 
-**Impact:** Remote Code Execution (RCE)
+**Risk Rating:** Critical
 
-**Target:** PortSwigger Web Security Academy training lab
+**Vulnerability:** Unrestricted File Upload leading to Remote Code Execution
 
-**Status:** Confirmed
+**Affected Functionality:** Avatar Upload
+
+**Testing Environment:** PortSwigger Web Security Academy
 
 ---
 
-## 2. Executive Summary
+## 2. Vulnerability Details
 
-The application contains an insecure file-upload vulnerability in the avatar upload functionality.
+### Vulnerability Classification
 
-An authenticated user can upload a PHP file through the avatar upload mechanism. The uploaded file is stored in a web-accessible location where the server processes PHP files as executable code.
+**Primary vulnerability:**
 
-By requesting the uploaded PHP resource, server-side code execution can be demonstrated.
+Unrestricted File Upload
 
-This vulnerability can potentially allow an attacker to execute arbitrary code with the privileges of the web application process.
+**Impact:**
+
+Remote Code Execution
+
+**CWE:**
+
+CWE-434 — Unrestricted Upload of File with Dangerous Type
+
+### Description
+
+The avatar upload functionality did not sufficiently restrict the type of files that could be uploaded.
+
+An attacker with valid application access could upload a crafted PHP file instead of a legitimate image.
+
+Because the uploaded file remained accessible through the web application and was interpreted as PHP, the attacker-controlled code was executed by the server.
 
 ---
 
 ## 3. Affected Functionality
 
-The vulnerable functionality is the application's avatar/profile image upload mechanism.
+The vulnerable functionality was the application's avatar upload feature.
 
-The relevant endpoint observed during testing was:
+The relevant request used:
 
 ```text
 POST /my-account/avatar

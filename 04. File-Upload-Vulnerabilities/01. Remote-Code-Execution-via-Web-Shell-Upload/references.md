@@ -1,36 +1,62 @@
 # References
 
-## Primary Learning Resource
+## Primary References
 
-- PortSwigger Web Security Academy — File Upload Vulnerabilities
-- PortSwigger Web Security Academy — Remote Code Execution via Web Shell Upload
+### PortSwigger Web Security Academy
 
-## Security Guidance
+- File upload vulnerabilities  
+  https://portswigger.net/web-security/file-upload
 
-- OWASP — File Upload Cheat Sheet
-- OWASP — Unrestricted Upload of File with Dangerous Type (CWE-434)
+- Exploiting unrestricted file uploads to deploy a web shell  
+  https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload
 
-## Tools Used
+### OWASP
 
-- Burp Suite Professional
-- Firefox
-- Kali Linux
+- OWASP File Upload Cheat Sheet  
+  https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html
 
-## Lab Environment
+- OWASP Top 10 — A05:2021 Security Misconfiguration  
+  https://owasp.org/Top10/A05_2021-Security_Misconfiguration/
 
-This practical exercise was performed exclusively in the PortSwigger Web Security Academy authorized training environment.
+- OWASP Top 10 — A03:2021 Injection  
+  https://owasp.org/Top10/A03_2021-Injection/
 
-## Purpose
+## Supporting References
 
-These references were used to understand:
+### PHP Documentation
 
-- File upload vulnerabilities
+- PHP `file_get_contents()`  
+  https://www.php.net/manual/en/function.file-get-contents.php
+
+### Apache HTTP Server
+
+- Apache HTTP Server Documentation  
+  https://httpd.apache.org/docs/
+
+## Topics Covered
+
+This lab documentation references the following security concepts:
+
+- Unrestricted file upload
 - Server-side file validation
-- Web shell concepts
-- Remote Code Execution
-- Secure file-upload implementation
-- Mitigation strategies
+- MIME type validation
+- File extension validation
+- Web shell upload
+- Remote Code Execution (RCE)
+- Web-accessible upload directories
+- Server-side script execution
+- Least privilege
+- Secure file storage
+- Defense-in-depth
 
-## Security Note
+## Testing Environment
 
-The techniques documented in this lab are intended for authorized security testing, educational labs, and controlled environments only.
+This lab was performed exclusively in the authorized:
+
+**PortSwigger Web Security Academy**
+
+No unauthorized third-party systems were targeted.
+
+## Disclaimer
+
+The references above are provided for educational, defensive security research, and authorized penetration-testing purposes.
