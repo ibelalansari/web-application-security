@@ -1,0 +1,65 @@
+OWASP TOP 10 — A08: SOFTWARE OR DATA INTEGRITY FAILURES
+=========================================================
+
+Purpose
+-------
+This category covers situations where software or critical data is trusted
+without adequately verifying its integrity or authenticity.
+
+Common Areas
+------------
+- Unsigned software updates
+- Untrusted dependencies
+- Insecure deserialization
+- CI/CD pipeline integrity
+- Serialized data
+- Software update mechanisms
+- External data processing
+
+Insecure Deserialization
+------------------------
+Potentially dangerous when an application deserializes attacker-controlled
+data without adequate validation.
+
+Assessment Focus
+----------------
+- Identify serialization formats.
+- Determine whether serialized data is user-controlled.
+- Identify trust boundaries.
+- Determine whether integrity protection exists.
+- Examine object reconstruction behavior.
+- Identify dangerous object types or functions.
+- Assess whether manipulation changes application behavior.
+
+Supply Chain / Update Testing
+-----------------------------
+- Identify update sources.
+- Verify authenticity of update packages.
+- Review integrity validation.
+- Check whether transport is secure.
+- Determine whether signatures are verified.
+- Assess dependency trust relationships.
+
+Impact
+------
+Depending on the affected component:
+- Code execution
+- Data manipulation
+- Application compromise
+- Supply chain compromise
+- Privilege escalation
+
+Remediation
+-----------
+- Verify software and data integrity.
+- Use cryptographic signatures where appropriate.
+- Validate serialized input.
+- Avoid unsafe deserialization.
+- Use trusted dependency sources.
+- Secure CI/CD pipelines.
+- Maintain dependency and release integrity.
+
+Security Principle
+------------------
+Never automatically trust software, serialized objects, or critical data merely
+because they originate from an expected source.

@@ -1,0 +1,78 @@
+OWASP TOP 10 — A07: AUTHENTICATION FAILURES
+============================================
+
+Purpose
+-------
+Authentication Failures occur when an application incorrectly verifies or
+maintains the identity of users.
+
+Authentication Areas
+--------------------
+- Login
+- Registration
+- Password reset
+- Multi-factor authentication
+- Session management
+- Account recovery
+- Remember-me functionality
+- Credential change
+
+Common Failures
+---------------
+- Weak password policy
+- Credential stuffing exposure
+- Brute-force exposure
+- Username enumeration
+- Weak password reset
+- MFA bypass
+- Session fixation
+- Predictable session identifiers
+- Improper session invalidation
+- Authentication state inconsistencies
+
+Testing Methodology
+-------------------
+1. Map authentication workflows.
+2. Test login behavior.
+3. Test invalid credentials.
+4. Examine account enumeration behavior.
+5. Assess rate limiting.
+6. Test password reset functionality.
+7. Review MFA implementation.
+8. Examine session lifecycle.
+9. Test logout and session invalidation.
+10. Verify authentication state across sensitive endpoints.
+
+Session Security
+----------------
+Verify:
+- Secure session identifiers
+- HTTPS transmission
+- Appropriate cookie attributes
+- Session rotation after authentication
+- Proper logout invalidation
+- Session expiration
+- Re-authentication for sensitive actions
+
+Impact
+------
+- Account takeover
+- Credential compromise
+- Session hijacking
+- Unauthorized access
+- Privilege escalation
+
+Remediation
+-----------
+- Implement strong authentication controls.
+- Use secure session management.
+- Protect password reset workflows.
+- Implement rate limiting and anti-automation controls.
+- Support MFA appropriately.
+- Prevent username enumeration where practical.
+- Rotate and invalidate sessions correctly.
+
+Security Principle
+------------------
+Authentication must establish and maintain a trustworthy identity throughout
+the complete application session.

@@ -1,0 +1,71 @@
+OWASP TOP 10 — A06: INSECURE DESIGN
+====================================
+
+Purpose
+-------
+Insecure Design represents weaknesses caused by missing or ineffective security
+controls at the design and architectural level.
+
+Unlike implementation bugs, insecure design often exists because the required
+security control was never properly designed.
+
+Common Examples
+---------------
+- Missing abuse-case analysis
+- Missing rate limiting
+- Weak business logic
+- Inadequate authorization model
+- Unsafe workflow design
+- Missing transaction integrity controls
+- Lack of segregation of duties
+- Security assumptions not enforced
+
+Testing Methodology
+-------------------
+- Understand the application's intended workflow.
+- Identify security assumptions.
+- Identify trust boundaries.
+- Identify sensitive business operations.
+- Test abnormal workflow sequences.
+- Test repeated operations.
+- Test race-prone business processes.
+- Test limits and business rules.
+- Attempt actions outside the intended workflow.
+- Compare expected behavior with actual behavior.
+
+Business Logic Testing
+----------------------
+Focus on:
+- Quantity manipulation
+- Price manipulation
+- Workflow skipping
+- Repeated actions
+- State transition abuse
+- Role restrictions
+- Transaction manipulation
+- Approval bypass
+- Account recovery workflows
+
+Impact
+------
+- Financial loss
+- Unauthorized transactions
+- Privilege escalation
+- Fraud
+- Business process abuse
+- Data compromise
+
+Remediation
+-----------
+- Perform threat modeling.
+- Define security requirements before implementation.
+- Model abuse cases.
+- Implement business rules server-side.
+- Apply defense in depth.
+- Use centralized security controls.
+- Test security assumptions during design and development.
+
+Security Principle
+------------------
+Security should be designed into the application's architecture rather than
+added after implementation.

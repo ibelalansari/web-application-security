@@ -1,0 +1,81 @@
+OWASP TOP 10 — A02: SECURITY MISCONFIGURATION
+==============================================
+
+Purpose
+-------
+Security Misconfiguration occurs when security settings are incorrectly
+implemented, left at insecure defaults, unnecessarily exposed, or inconsistently
+configured.
+
+Common Examples
+---------------
+- Default credentials
+- Debug mode enabled
+- Verbose error messages
+- Unnecessary services enabled
+- Directory listing enabled
+- Missing security headers
+- Exposed administrative interfaces
+- Insecure cloud/storage configuration
+- Improper permissions
+- Unnecessary HTTP methods
+- Outdated or insecure server configuration
+
+Testing Methodology
+-------------------
+1. Identify application technologies and components.
+2. Review HTTP response headers.
+3. Inspect error handling behavior.
+4. Check for debug information.
+5. Test common administrative paths.
+6. Identify unnecessary HTTP methods.
+7. Review exposed files and directories.
+8. Check default or test functionality.
+9. Examine security-related configuration.
+10. Compare configuration against security requirements.
+
+Burp Suite Focus
+----------------
+- Proxy
+- HTTP History
+- Repeater
+- Site Map
+
+Useful Observations
+-------------------
+- Server banners
+- Framework versions
+- Debug traces
+- Stack traces
+- Internal paths
+- Environment information
+- Configuration files
+- Backup files
+- Unexpected response headers
+
+Impact
+------
+Depending on the configuration issue, impact may include:
+- Information disclosure
+- Unauthorized administrative access
+- Attack surface expansion
+- Credential exposure
+- Application compromise
+- Facilitation of other vulnerabilities
+
+Remediation
+-----------
+- Establish secure configuration baselines.
+- Remove unnecessary features and services.
+- Disable debug functionality in production.
+- Remove default credentials.
+- Apply least privilege.
+- Configure secure HTTP headers.
+- Restrict administrative interfaces.
+- Implement configuration management and review.
+- Continuously verify production configuration.
+
+Security Principle
+------------------
+Production systems should expose only what is necessary and should use
+secure-by-default configuration.

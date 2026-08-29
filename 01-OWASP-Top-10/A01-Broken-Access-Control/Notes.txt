@@ -1,0 +1,101 @@
+OWASP TOP 10 — A01: BROKEN ACCESS CONTROL
+==========================================
+
+Purpose
+-------
+Access control determines whether an authenticated or unauthenticated user is
+allowed to perform a specific action or access a specific resource.
+
+Broken Access Control occurs when application-side authorization controls can
+be bypassed or incorrectly enforced.
+
+Core Concepts
+-------------
+- Authentication answers: "Who are you?"
+- Authorization answers: "What are you allowed to do?"
+- Access control must be enforced server-side.
+- Client-side restrictions are not security controls.
+- Every sensitive action should be authorized independently.
+
+Common Access Control Failures
+------------------------------
+1. Horizontal Privilege Escalation
+   A user accesses another user's resources at the same privilege level.
+
+2. Vertical Privilege Escalation
+   A low-privileged user performs actions intended for higher-privileged users.
+
+3. IDOR / BOLA
+   Object identifiers are modified to access unauthorized resources.
+
+4. Forced Browsing
+   Restricted endpoints are accessed directly without navigating through
+   the intended application flow.
+
+5. Missing Function-Level Authorization
+   Sensitive administrative functions are accessible to unauthorized users.
+
+6. Parameter-Based Authorization Bypass
+   Authorization decisions rely on user-controlled parameters.
+
+7. HTTP Method-Based Bypass
+   Authorization differs incorrectly between GET, POST, PUT, DELETE, etc.
+
+8. Path-Based Access Control Bypass
+   Alternate paths or endpoint representations bypass restrictions.
+
+Testing Methodology
+-------------------
+- Identify application roles and privilege levels.
+- Create or obtain test accounts with different roles.
+- Map sensitive endpoints and resources.
+- Test authenticated and unauthenticated access.
+- Modify object identifiers.
+- Modify role-related parameters.
+- Test direct access to privileged endpoints.
+- Compare behavior between HTTP methods.
+- Test access to other users' objects.
+- Verify authorization after every state-changing request.
+
+Burp Suite Focus
+----------------
+- HTTP History
+- Repeater
+- Proxy
+- Comparer
+- Intruder for controlled parameter testing
+
+Evidence to Capture
+-------------------
+- Original request
+- Modified request
+- Server response
+- Account/role used during testing
+- Unauthorized resource or function accessed
+- Clear before/after comparison
+
+Impact Assessment
+-----------------
+Potential impact includes:
+- Unauthorized data access
+- Modification of other users' data
+- Administrative function access
+- Account takeover paths
+- Privilege escalation
+- Exposure of sensitive information
+
+Remediation
+-----------
+- Enforce authorization server-side.
+- Deny access by default.
+- Implement centralized authorization logic.
+- Validate ownership of every object.
+- Avoid trusting client-controlled role/privilege parameters.
+- Use indirect or unpredictable object identifiers where appropriate.
+- Apply authorization checks to every sensitive endpoint and action.
+- Test authorization controls across all user roles.
+
+Security Principle
+------------------
+Never trust the client to decide what the user is allowed to access or do.
+Authorization must be explicit, server-side, and enforced consistently.

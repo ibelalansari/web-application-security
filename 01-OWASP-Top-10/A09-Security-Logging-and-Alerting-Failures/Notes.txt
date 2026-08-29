@@ -1,0 +1,77 @@
+OWASP TOP 10 — A09: SECURITY LOGGING AND ALERTING FAILURES
+============================================================
+
+Purpose
+-------
+Security Logging and Alerting Failures occur when security-relevant events are
+not adequately recorded, monitored, correlated, or alerted upon.
+
+Important Events
+----------------
+- Authentication failures
+- Successful authentication
+- Password changes
+- MFA events
+- Authorization failures
+- Privileged actions
+- Account creation
+- Account deletion
+- Sensitive data access
+- Administrative operations
+- Suspicious input
+
+Testing Methodology
+-------------------
+Determine whether important security events:
+- Are logged
+- Contain useful context
+- Include timestamps
+- Identify relevant users or sessions
+- Can be correlated
+- Generate appropriate alerts
+- Are protected from unauthorized modification
+
+Log Quality
+-----------
+Useful security logs should provide enough information to answer:
+- What happened?
+- When did it happen?
+- Which account was involved?
+- Which resource was affected?
+- What action occurred?
+- What was the outcome?
+- Can the event be correlated with other activity?
+
+Common Failures
+---------------
+- Missing authentication logs
+- Missing authorization failure logs
+- No alerting for suspicious activity
+- Excessive irrelevant logging
+- Sensitive data written to logs
+- Logs easily modified or deleted
+- No centralized monitoring
+- No incident response integration
+
+Impact
+------
+- Delayed incident detection
+- Poor forensic visibility
+- Increased attacker dwell time
+- Inability to investigate security incidents
+- Compliance and audit issues
+
+Remediation
+-----------
+- Define security logging requirements.
+- Log security-relevant events.
+- Centralize security logs.
+- Protect log integrity.
+- Implement alerting for high-risk events.
+- Avoid logging passwords, tokens, and sensitive secrets.
+- Establish monitoring and incident response procedures.
+
+Security Principle
+------------------
+A security control is significantly weaker when successful attacks cannot be
+detected, investigated, and correlated.

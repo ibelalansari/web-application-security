@@ -1,0 +1,72 @@
+OWASP TOP 10 — A03: SOFTWARE SUPPLY CHAIN FAILURES
+===================================================
+
+Purpose
+-------
+Software Supply Chain Failures occur when applications depend on compromised,
+malicious, vulnerable, outdated, or improperly managed third-party components,
+services, libraries, build systems, or development dependencies.
+
+Supply Chain Components
+-----------------------
+- Third-party libraries
+- Package managers
+- Frameworks
+- Plugins
+- CI/CD systems
+- Build tools
+- Container images
+- External APIs
+- Development dependencies
+- Software repositories
+
+Common Risks
+------------
+- Vulnerable dependencies
+- Malicious packages
+- Dependency confusion
+- Typosquatting
+- Compromised upstream packages
+- Unmaintained libraries
+- Malicious build dependencies
+- Compromised CI/CD pipelines
+- Lack of dependency integrity verification
+
+Assessment Methodology
+----------------------
+- Identify application dependencies.
+- Identify package managers and dependency manifests.
+- Review dependency versions.
+- Determine whether components are maintained.
+- Check known vulnerability information.
+- Identify unexpected or unnecessary dependencies.
+- Review package source and provenance.
+- Examine integrity and lock mechanisms.
+- Assess CI/CD dependency handling.
+
+Security Controls
+-----------------
+- Maintain Software Bill of Materials (SBOM).
+- Pin dependency versions where appropriate.
+- Use trusted package repositories.
+- Verify package integrity.
+- Remove unnecessary dependencies.
+- Continuously monitor dependencies.
+- Secure CI/CD pipelines.
+- Apply least privilege to build systems.
+- Review third-party components before adoption.
+
+Impact
+------
+Supply chain compromise can lead to:
+- Malicious code execution
+- Credential theft
+- Data compromise
+- Application compromise
+- CI/CD compromise
+- Widespread downstream impact
+
+Security Principle
+------------------
+Third-party software is part of the application's attack surface and must be
+treated as a security dependency.

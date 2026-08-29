@@ -1,0 +1,78 @@
+OWASP TOP 10 — A04: CRYPTOGRAPHIC FAILURES
+============================================
+
+Purpose
+-------
+Cryptographic Failures occur when sensitive data is inadequately protected
+during storage, processing, or transmission.
+
+Sensitive Data Examples
+-----------------------
+- Passwords
+- Authentication tokens
+- Session identifiers
+- Personal information
+- Financial information
+- API keys
+- Encryption keys
+- Confidential business data
+
+Common Failures
+---------------
+- Plaintext transmission
+- Weak encryption algorithms
+- Weak cryptographic keys
+- Hard-coded secrets
+- Improper key management
+- Weak password hashing
+- Missing encryption for sensitive data
+- Improper certificate validation
+- Reuse of cryptographic material
+- Exposure of secrets in source code
+
+Testing Methodology
+-------------------
+1. Identify sensitive information.
+2. Determine where sensitive data is transmitted.
+3. Inspect HTTPS/TLS usage.
+4. Examine authentication and session mechanisms.
+5. Check whether passwords are securely hashed.
+6. Search for exposed secrets.
+7. Review cryptographic configuration.
+8. Examine certificate validation.
+9. Determine whether encryption is actually appropriate and correctly applied.
+
+Assessment Focus
+----------------
+Ask:
+- What data requires confidentiality?
+- Where is the data stored?
+- Where is it transmitted?
+- Which cryptographic mechanism protects it?
+- How are keys generated and stored?
+- Is the cryptographic implementation modern and appropriate?
+
+Impact
+------
+- Confidential information disclosure
+- Credential compromise
+- Session compromise
+- Identity theft
+- Regulatory exposure
+- Long-term data confidentiality loss
+
+Remediation
+-----------
+- Use modern, vetted cryptographic algorithms.
+- Use HTTPS/TLS for sensitive communication.
+- Never store plaintext passwords.
+- Use strong password hashing mechanisms.
+- Protect cryptographic keys separately from application data.
+- Rotate compromised credentials and keys.
+- Avoid hard-coded secrets.
+- Follow established cryptographic standards.
+
+Security Principle
+------------------
+Do not implement custom cryptography when a well-tested standard mechanism
+already exists.

@@ -1,0 +1,79 @@
+OWASP TOP 10 — A10: MISHANDLING OF EXCEPTIONAL CONDITIONS
+===========================================================
+
+Purpose
+-------
+This category covers security weaknesses caused by improper handling of
+exceptions, errors, unexpected states, resource exhaustion, or abnormal
+execution conditions.
+
+Common Examples
+---------------
+- Verbose error messages
+- Stack traces exposed to users
+- Fail-open behavior
+- Fail-closed behavior implemented incorrectly
+- Inconsistent error handling
+- Improper exception handling
+- Resource exhaustion
+- Unexpected application states
+- Security checks skipped after exceptions
+
+Testing Methodology
+-------------------
+1. Establish normal application behavior.
+2. Trigger invalid or unexpected input.
+3. Test malformed requests.
+4. Test missing parameters.
+5. Test unexpected parameter values.
+6. Test invalid HTTP methods.
+7. Test abnormal workflow states.
+8. Observe application error responses.
+9. Determine whether security controls remain enforced.
+10. Verify whether sensitive information is exposed.
+
+Error Information to Review
+----------------------------
+- Stack traces
+- File paths
+- Database errors
+- Framework information
+- Internal hostnames
+- Debug information
+- Configuration details
+- Source code references
+- Internal identifiers
+
+Fail-Open Risk
+--------------
+A security control may fail open when an exception or unexpected condition
+causes access to be granted instead of denied.
+
+Example:
+Authorization check fails unexpectedly -> application continues processing
+the request as if authorization succeeded.
+
+Impact
+------
+- Information disclosure
+- Authorization bypass
+- Security control bypass
+- Denial of service
+- Application instability
+- Potential code execution depending on the condition
+
+Remediation
+-----------
+- Implement centralized exception handling.
+- Return safe generic errors to users.
+- Log detailed diagnostic information securely.
+- Ensure security controls fail securely.
+- Validate unexpected application states.
+- Protect against resource exhaustion.
+- Test exceptional paths explicitly.
+- Never expose internal implementation details unnecessarily.
+
+Security Principle
+------------------
+Exceptional conditions must be treated as security-relevant execution paths,
+not as harmless edge cases.

@@ -1,0 +1,86 @@
+OWASP TOP 10 — A05: INJECTION
+==============================
+
+Purpose
+-------
+Injection occurs when untrusted input is interpreted as part of a command,
+query, expression, or language instruction by an interpreter.
+
+Common Injection Classes
+-------------------------
+- SQL Injection
+- NoSQL Injection
+- OS Command Injection
+- LDAP Injection
+- XPath Injection
+- Template Injection
+- Expression Language Injection
+- ORM Injection
+
+Core Attack Concept
+-------------------
+Untrusted input crosses a trust boundary and becomes executable syntax.
+
+Testing Methodology
+-------------------
+1. Identify all user-controlled input.
+2. Determine where the input is processed.
+3. Identify the underlying interpreter or parser.
+4. Establish a baseline request.
+5. Test input behavior using controlled variations.
+6. Observe differences in responses.
+7. Determine whether input changes application logic.
+8. Validate exploitability safely.
+9. Assess actual security impact.
+
+SQL Injection Testing Areas
+---------------------------
+- URL parameters
+- POST parameters
+- JSON parameters
+- Cookies
+- HTTP headers
+- Search functionality
+- Login forms
+- Filtering and sorting parameters
+
+SQL Injection Categories
+------------------------
+- UNION-based
+- Error-based
+- Boolean-based
+- Time-based
+- Out-of-band
+- Second-order
+
+Burp Suite Focus
+----------------
+- Proxy
+- Repeater
+- Intruder
+- Comparer
+- HTTP History
+
+Validation Requirements
+-----------------------
+A professional finding should demonstrate:
+- Injection point
+- Controllable input
+- Observable behavior
+- Reproducible result
+- Security impact
+
+Remediation
+-----------
+- Use parameterized queries.
+- Use prepared statements.
+- Apply safe APIs.
+- Validate input where appropriate.
+- Avoid dynamic query construction.
+- Apply least privilege to database accounts.
+- Do not rely solely on input filtering or blacklists.
+
+Security Principle
+------------------
+Treat all external input as untrusted data until it is safely handled by the
+appropriate interpreter-specific mechanism.
