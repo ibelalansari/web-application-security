@@ -1,235 +1,398 @@
-<p align="center">
-  <img src="assets/github-banner.png" alt="Web Application Security" width="100%">
-</p>
+# 🔒 Web Application Security
 
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=ibelalansari&label=Repository%20Views&color=0A66C2&style=for-the-badge" alt="Repository Views" />
-</p>
+A professional documentation and research repository focused on **Web Application Security assessment, vulnerability analysis, manual security testing, and penetration testing methodologies** aligned with the OWASP Top 10.
 
-<h1 align="center">Web Application Security</h1>
-
-<p align="center">
-Professional Web Application Security Portfolio
-</p>
-
-<p align="center">
-Hands-on Security Assessments • PortSwigger Web Security Academy • OWASP Testing Methodology • Burp Suite Professional • Penetration Testing
-</p>
+> **Focus:** Web Application Security | OWASP Top 10 | Manual Security Testing | Vulnerability Assessment | Penetration Testing
 
 ---
 
-# Repository Overview
+## 📋 Table of Contents
 
-This repository serves as my dedicated **Web Application Security Portfolio**, documenting hands-on security assessments, vulnerability research, exploitation methodologies, and professional security documentation.
-
-The repository focuses on manual web application security testing using industry-recognized methodologies and modern offensive security tools.
-
-All assessments are performed exclusively within authorized laboratory environments for educational and professional development purposes.
-
----
-
-# Objectives
-
-- Master Web Application Security
-- Apply OWASP Testing Methodology
-- Perform Manual Security Assessments
-- Validate Security Vulnerabilities
-- Develop Professional Security Reports
-- Build a Practical Security Portfolio
-- Prepare for Penetration Testing Engagements
-- Prepare for Bug Bounty Programs
+1. [Overview](#overview)
+2. [OWASP Top 10](#owasp-top-10)
+3. [Vulnerability Types](#vulnerability-types)
+4. [Security Testing Methodology](#security-testing-methodology)
+5. [Tools & Technologies](#tools--technologies)
+6. [Lab Writeups](#lab-writeups)
+7. [Security Research](#security-research)
+8. [How to Use](#how-to-use)
+9. [Resources](#resources)
 
 ---
 
-# Topics Covered
+## 🎯 Overview
+
+This repository documents practical work and technical research related to **Web Application Security**, including vulnerability analysis, manual security testing, controlled lab exercises, and security assessment methodologies.
+
+### Repository Contents
+
+- 🔐 **OWASP Top 10** — Vulnerability analysis and security testing techniques
+- 🧪 **Lab Writeups** — Documented security testing exercises and findings
+- 🔍 **Vulnerability Analysis** — Technical analysis of common web vulnerabilities
+- 🛠️ **Testing Methodologies** — Structured approaches to identifying and validating vulnerabilities
+- 💻 **Proof of Concept (PoC)** — Controlled demonstrations within authorized environments
+- 📊 **Security Research** — Practical research, observations, and technical findings
+- 🧰 **Tool Guides** — Documentation for tools used during security testing
+
+> All testing and demonstrations are performed only in authorized, controlled, or intentionally vulnerable environments.
+
+---
+
+# 🔓 OWASP Top 10
+
+This section follows the **OWASP Top 10 (2021)** classification.
+
+## A01: Broken Access Control
+
+Topics include:
+
+- Broken Access Control
+- IDOR
+- Horizontal Privilege Escalation
+- Vertical Privilege Escalation
+- Authorization Bypass
+- Access Control Testing
+- Forced Browsing
+
+📖 [Full Documentation →](./OWASP-Top-10/A01-Broken-Access-Control/)
+
+---
+
+## A02: Cryptographic Failures
+
+Topics include:
+
+- Sensitive Data Exposure
+- Weak Cryptographic Implementations
+- Insecure Data Transmission
+- Weak Hashing
+- Insecure Storage of Sensitive Information
+
+📖 [Full Documentation →](./OWASP-Top-10/A02-Cryptographic-Failures/)
+
+---
+
+## A03: Injection
+
+Topics include:
+
+- SQL Injection
+- Blind SQL Injection
+- Time-Based SQL Injection
+- OS Command Injection
+- LDAP Injection
+- XPath Injection
+- Other Injection Vulnerabilities
+
+📖 [Full Documentation →](./OWASP-Top-10/A03-Injection/)
+
+---
+
+## A04: Insecure Design
+
+Topics include:
+
+- Business Logic Flaws
+- Security Control Failures
+- Insecure Workflows
+- Threat Modeling Concepts
+- Abuse Case Analysis
+
+📖 [Full Documentation →](./OWASP-Top-10/A04-Insecure-Design/)
+
+---
+
+## A05: Security Misconfiguration
+
+Topics include:
+
+- Default Credentials
+- Unnecessary Features
+- Security Header Misconfiguration
+- Directory Listing
+- Debug Information Exposure
+- Improper Server Configuration
+
+📖 [Full Documentation →](./OWASP-Top-10/A05-Security-Misconfiguration/)
+
+---
+
+## A06: Vulnerable and Outdated Components
+
+Topics include:
+
+- Outdated Dependencies
+- Known Vulnerabilities
+- Component Enumeration
+- Version Disclosure
+- Dependency Security
+
+📖 [Full Documentation →](./OWASP-Top-10/A06-Vulnerable-and-Outdated-Components/)
+
+---
+
+## A07: Identification and Authentication Failures
+
+Topics include:
+
+- Authentication Bypass
+- Weak Authentication
+- Brute-Force Protection
+- Credential Attacks
+- Session Management
+- Password Policy Issues
+- Multi-Factor Authentication Weaknesses
+
+📖 [Full Documentation →](./OWASP-Top-10/A07-Identification-and-Authentication-Failures/)
+
+---
+
+## A08: Software and Data Integrity Failures
+
+Topics include:
+
+- Insecure Software Updates
+- Dependency Integrity
+- Deserialization Risks
+- CI/CD Integrity Issues
+- Untrusted Software Components
+
+📖 [Full Documentation →](./OWASP-Top-10/A08-Software-and-Data-Integrity-Failures/)
+
+---
+
+## A09: Security Logging and Monitoring Failures
+
+Topics include:
+
+- Insufficient Logging
+- Monitoring Gaps
+- Security Event Detection
+- Audit Trail Issues
+- Incident Detection Challenges
+
+📖 [Full Documentation →](./OWASP-Top-10/A09-Security-Logging-and-Monitoring-Failures/)
+
+---
+
+## A10: Server-Side Request Forgery (SSRF)
+
+Topics include:
+
+- SSRF Fundamentals
+- Internal Resource Access
+- URL Validation Issues
+- Cloud Metadata Access
+- SSRF Detection and Validation
+
+📖 [Full Documentation →](./OWASP-Top-10/A10-Server-Side-Request-Forgery/)
+
+---
+
+# 🛠️ Vulnerability Types
 
 ## Injection
 
 - SQL Injection
+- Blind SQL Injection
 - Command Injection
+- LDAP Injection
+- XPath Injection
+- SSTI
 
-## Client-Side Vulnerabilities
+## Cross-Site Vulnerabilities
 
-- Cross-Site Scripting (XSS)
+- Reflected XSS
+- Stored XSS
+- DOM-Based XSS
 - Cross-Site Request Forgery (CSRF)
 
-## Authentication & Authorization
+## Access Control
 
-- Authentication
-- Access Control
-- Session Management
-- JWT Security
+- Broken Access Control
+- IDOR
+- Privilege Escalation
+- Horizontal Authorization Bypass
+- Vertical Authorization Bypass
+- Forced Browsing
+
+## Authentication & Session Security
+
+- Authentication Bypass
+- Weak Authentication
+- Session Management Flaws
+- Password Attacks
+- Session Fixation
+- Token Manipulation
+
+## File & Path Security
+
+- Unrestricted File Upload
+- File Type Validation Bypass
+- Path Traversal
+- Local File Inclusion (LFI)
+- Remote File Inclusion (RFI)
 
 ## Server-Side Vulnerabilities
 
-- File Inclusion
-- Remote Code Execution (RCE)
-- XML External Entity (XXE)
-- Server-Side Request Forgery (SSRF)
-- Server-Side Template Injection (SSTI)
+- SSRF
+- SSTI
+- XXE
+- Insecure Deserialization
+- Server-Side Injection
 
-## File Security
+## Business Logic
 
-- File Upload Vulnerabilities
-- Path Traversal
-
----
-
-# Assessment Methodology
-
-Every assessment follows a structured workflow.
-
-```
-Reconnaissance
-      ↓
-Application Mapping
-      ↓
-Authentication Testing
-      ↓
-Authorization Testing
-      ↓
-Input Validation Testing
-      ↓
-Burp Suite Analysis
-      ↓
-Vulnerability Validation
-      ↓
-Risk Assessment
-      ↓
-Professional Documentation
-      ↓
-Mitigation Recommendations
-```
+- Business Logic Flaws
+- Price Manipulation
+- Coupon/Discount Bypass
+- Workflow Bypass
+- Race Conditions
 
 ---
 
-# Repository Structure
+# 🔬 Security Testing Methodology
 
-```text
-Web-Application-Security
-│
-├── 01. SQL-Injection
-├── 02. Cross-Site-Scripting
-├── 03. Cross-Site-Request-Forgery
-├── 04. File-Upload-Vulnerabilities
-├── 05. File-Inclusion
-├── 06. Remote-Code-Execution
-├── 07. Authentication
-├── 08. Access-Control
-├── 09. XXE
-├── 10. SSRF
-├── 11. Command-Injection
-├── 12. Path-Traversal
-├── 13. Server-Side-Template-Injection
-├── 14. Insecure-Deserialization
-├── 15. JWT
-│
-└── README.md
-```
+My testing methodology follows a structured, evidence-driven assessment process.
+
+### 1. Reconnaissance
+
+- Application discovery
+- Technology identification
+- Endpoint discovery
+- Attack-surface mapping
+- Information gathering
+
+### 2. Application Mapping
+
+- Identify application functionality
+- Map parameters and inputs
+- Analyze authentication flows
+- Identify user roles and privileges
+- Map sensitive functionality
+
+### 3. Request & Response Analysis
+
+- HTTP request analysis
+- Parameter manipulation
+- Header analysis
+- Cookie analysis
+- Response behavior analysis
+
+### 4. Vulnerability Identification
+
+Test for relevant vulnerabilities including:
+
+- Injection
+- Authentication weaknesses
+- Authorization flaws
+- XSS
+- CSRF
+- File upload issues
+- SSRF
+- Business logic vulnerabilities
+
+### 5. Vulnerability Validation
+
+- Reproduce the issue
+- Confirm security impact
+- Minimize false positives
+- Collect technical evidence
+- Document affected functionality
+
+### 6. Risk Assessment
+
+Each validated finding is evaluated based on:
+
+- Likelihood
+- Impact
+- Exploitability
+- Affected functionality
+- Potential business/security consequences
+
+### 7. Documentation & Reporting
+
+Each documented finding may include:
+
+- Vulnerability description
+- Affected endpoint/function
+- Technical details
+- Reproduction steps
+- Evidence / screenshots
+- Impact assessment
+- Severity
+- Remediation guidance
 
 ---
 
-# Documentation Standard
+# 🧰 Tools & Technologies
 
-Every lab includes:
+## Web Security Testing
 
-- Overview
-- Objective
-- Lab Information
-- Methodology
-- Payloads Used
-- HTTP Requests
-- HTTP Responses
-- Burp Suite Screenshots
-- Findings
-- Risk Analysis
-- Mitigation
-- References
-
----
-
-# Tools
-
-## Primary Tools
-
-- Burp Suite Professional
-- Firefox Developer Edition
+- Burp Suite
+- OWASP ZAP
 - Browser Developer Tools
-- PortSwigger Web Security Academy
 
-## Supporting Tools
+## Reconnaissance & Network Analysis
 
 - Nmap
-- FFUF
-- Gobuster
-- Wappalyzer
-- WhatWeb
-- Git
-- GitHub
-- Visual Studio Code
+- Wireshark
+- DNS / HTTP analysis tools
+
+## Security Research
+
+- Kali Linux
+- Git & GitHub
+- Custom scripts and utilities
+
+📁 [Tool Guides →](./Tools-Guide/)
 
 ---
 
-# Standards & Frameworks
+# 🧪 Lab Writeups
 
-This repository aligns with internationally recognized security standards.
+Practical security testing and intentionally vulnerable environments are documented here.
 
-- OWASP Top 10
-- OWASP Web Security Testing Guide (WSTG)
-- OWASP ASVS
-- OWASP Cheat Sheet Series
-- MITRE ATT&CK
-- PTES
-- NIST SP 800-115
-
----
-
-# Learning Resources
+### Platforms
 
 - PortSwigger Web Security Academy
-- OWASP Foundation
-- OWASP Web Security Testing Guide
-- PayloadsAllTheThings
-- HackTricks
-- CWE
-- NIST Computer Security Resource Center
+- Hack The Box
+- TryHackMe
+- OWASP Juice Shop
+- DVWA
+- WebGoat
+- Other authorized lab environments
+
+📁 [Lab Writeups →](./Lab-Writeups/)
 
 ---
 
-# Current Progress
+# 🔬 Security Research
 
-| Module | Status |
-|---------|:------:|
-| SQL Injection | ✅ In Progress |
-| Cross-Site Scripting | ⏳ Planned |
-| Cross-Site Request Forgery | ⏳ Planned |
-| File Upload Vulnerabilities | ⏳ Planned |
-| File Inclusion | ⏳ Planned |
-| Remote Code Execution | ⏳ Planned |
-| Authentication | ⏳ Planned |
-| Access Control | ⏳ Planned |
-| XXE | ⏳ Planned |
-| SSRF | ⏳ Planned |
-| Command Injection | ⏳ Planned |
-| Path Traversal | ⏳ Planned |
-| SSTI | ⏳ Planned |
-| Insecure Deserialization | ⏳ Planned |
-| JWT Security | ⏳ Planned |
+This section contains independent technical research, vulnerability analysis, testing observations, and security experimentation conducted within authorized environments.
+
+Research may include:
+
+- Vulnerability analysis
+- Attack-surface research
+- Security control testing
+- Request/response analysis
+- Proof-of-concept development
+- Security methodology research
+
+📁 [Security Research →](./Security-Research/)
 
 ---
 
-# Professional Goals
+# 📚 How to Use
 
-- Develop advanced Web Application Security skills
-- Maintain structured security documentation
-- Demonstrate practical penetration testing methodologies
-- Build a professional offensive security portfolio
-- Continuously improve manual testing capabilities
+Each vulnerability or OWASP category is organized into its own directory.
 
----
+A typical lab documentation structure may include:
 
-# Disclaimer
-
-All activities documented in this repository were performed exclusively within authorized laboratory environments or intentionally vulnerable applications for educational, research, and professional development purposes.
-
-No unauthorized testing has been conducted against third-party systems.
+```text
+A01-Broken-Access-Control/
+├── README.md
+├── lab-writeup.md
+├── payloads.txt
+└── screenshots/
