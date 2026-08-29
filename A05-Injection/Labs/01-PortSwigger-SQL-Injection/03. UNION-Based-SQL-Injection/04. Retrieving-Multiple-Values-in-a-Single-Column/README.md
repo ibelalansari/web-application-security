@@ -1,282 +1,190 @@
-# SQL Injection UNION Attack — Retrieving Multiple Values in a Single Column
+# 💉 SQL Injection — Retrieving Multiple Values in a Single Column
 
-## Lab Overview
-
-This lab demonstrates a UNION-based SQL injection vulnerability in a product category filter.
-
-The application is vulnerable to SQL injection because user-controlled input is incorporated into a backend SQL query without sufficient protection. The query results are reflected in the application's response, allowing data from other database tables to be retrieved.
-
-The database contains a `users` table with the following columns:
-
-* `username`
-* `password`
-
-The objective is to retrieve all usernames and passwords and use the extracted credentials to authenticate as the `administrator` user.
+### PortSwigger Web Security Academy · A05 — Injection
 
 ---
 
-## Objectives
+## 🧪 Lab Information
 
-* Identify the SQL injection point.
-* Determine the number of columns returned by the original query.
-* Identify the column capable of returning text.
-* Retrieve data from the `users` table.
-* Retrieve multiple values through a single output column.
-* Extract administrator credentials.
-* Authenticate as the `administrator` user.
-* Verify successful exploitation.
-
----
-
-## Vulnerability Details
-
-| Property               | Details                                          |
-| ---------------------- | ------------------------------------------------ |
-| Vulnerability          | SQL Injection                                    |
-| Attack Type            | UNION-based SQL Injection                        |
-| Injection Point        | `category` parameter                             |
-| Affected Functionality | Product category filter                          |
-| Database Table         | `users`                                          |
-| Retrieved Fields       | `username`, `password`                           |
-| Impact                 | Sensitive data disclosure and account compromise |
-| Lab Platform           | PortSwigger Web Security Academy                 |
-| Tool                   | Burp Suite Professional                          |
-| Status                 | Solved                                           |
+| Field | Value |
+|---|---|
+| **Platform** | PortSwigger Web Security Academy |
+| **Module** | SQL Injection |
+| **Lab** | Retrieving Multiple Values in a Single Column |
+| **Difficulty** | Apprentice |
+| **Attack Type** | UNION-Based SQL Injection |
+| **Parameter** | `category` |
+| **Status** | ✅ Solved |
 
 ---
 
-## Attack Methodology
+## 🎯 Objective
 
-The attack followed a structured UNION-based SQL injection workflow:
+Exploit a **UNION-based SQL Injection** vulnerability to retrieve multiple values through a single text-compatible column and obtain administrator credentials.
 
-1. Identify the injectable parameter.
-2. Determine the number of columns in the original query.
+---
+
+## 🔎 Vulnerability
+
+The application is vulnerable to SQL Injection through the `category` parameter.
+
+The lab requires retrieving the `username` and `password` values from the `users` table. Since only one output column is suitable for text, both values must be concatenated into a single result.
+
+<p align="center">
+  <img src="./screenshots/01-lab-overview.png" alt="PortSwigger Lab Overview" width="900">
+</p>
+
+---
+
+## 🧭 Attack Workflow
+
+1. Identify the SQL Injection point.
+2. Determine the number of columns.
 3. Identify the text-compatible column.
-4. Construct a UNION query targeting the `users` table.
-5. Concatenate `username` and `password` into a single output value.
-6. Retrieve the credentials from the HTTP response.
+4. Identify the `users` table and relevant fields.
+5. Concatenate `username` and `password`.
+6. Retrieve administrator credentials.
 7. Authenticate as the administrator.
-8. Confirm successful exploitation.
+8. Verify successful exploitation.
 
 ---
 
-## 1. Identifying the Injection Point
+## 🛠️ Step 1 — Identify the Injection Point
 
-The vulnerable functionality was the product category filter.
+The vulnerable parameter was identified as:
 
-The `category` parameter was selected as the injection point and the request was transferred to Burp Suite Repeater for controlled testing.
+```text
+category
+```
 
-### Original Request
+Original request:
 
 ```http
 GET /filter?category=Accessories HTTP/2
 ```
 
-The original request is documented in:
-
-`screenshots/02-original-request.png`
+<p align="center">
+  <img src="./screenshots/02-original-request.png" alt="Original SQL Injection Request" width="900">
+</p>
 
 ---
 
-## 2. Determining the Number of Columns
+## 🧪 Step 2 — Determine the Column Count
 
-A UNION query containing two `NULL` values was tested:
+The UNION attack was tested against the original query.
 
-```sql
-' UNION SELECT NULL,NULL--
-```
-
-The request was accepted, indicating that the original query returned two columns.
-
-### Result
+The application was found to return:
 
 ```text
-Number of columns: 2
+2 columns
 ```
 
-Evidence:
-
-`screenshots/03-column-count.png`
+<p align="center">
+  <img src="./screenshots/03-column-count.png" alt="Determine Number of Columns" width="900">
+</p>
 
 ---
 
-## 3. Identifying the Text-Compatible Column
+## 🔎 Step 3 — Identify the Text-Compatible Column
 
-The columns were tested individually using a text value.
+The output columns were tested to determine which one accepted text values.
 
-### Test 1
+The second column was identified as the text-compatible output column.
 
-```sql
-' UNION SELECT 'abc',NULL--
-```
-
-This resulted in a server-side error.
-
-### Test 2
-
-```sql
-' UNION SELECT NULL,'abc'--
-```
-
-This request was accepted, demonstrating that the second column was compatible with text output.
-
-### Result
-
-```text
-Column 1: Not used for text output
-Column 2: Text-compatible
-```
-
-Evidence:
-
-`screenshots/04-text-compatible-column.png`
+<p align="center">
+  <img src="./screenshots/04-text-compatible-column.png" alt="Text-Compatible Column" width="900">
+</p>
 
 ---
 
-## 4. Retrieving Data from Another Table
+## 💉 Step 4 — Retrieve Multiple Values
 
-The lab description identified a `users` table containing:
+The `users` table contained the following relevant fields:
 
 ```text
 username
 password
 ```
 
-Because only one output column was compatible with text, both values needed to be combined into a single string.
-
-The following expression was used:
+Because only one column was suitable for text output, the two values were concatenated using the SQL string concatenation operator:
 
 ```sql
-username||'~'||password
+username || '~' || password
 ```
 
-The `~` character was used as a separator between the two values.
-
-The complete UNION query was:
+The resulting UNION query was:
 
 ```sql
 ' UNION SELECT NULL,username||'~'||password FROM users--
 ```
 
-This caused the application to return multiple username/password combinations through the single text-compatible column.
+This allowed multiple username/password pairs to be returned through the single text-compatible column.
 
-Evidence:
+<p align="center">
+  <img src="./screenshots/05-credential-extraction.png" alt="Credential Extraction Using UNION SQL Injection" width="900">
+</p>
 
-`screenshots/05-credential-extraction.png`
-
-> Sensitive credentials extracted during testing should be redacted before publishing this screenshot to a public repository.
-
----
-
-## 5. Administrator Authentication
-
-The extracted `administrator` credentials were used through the application's authentication functionality.
-
-Authentication was successful and the application displayed the administrator account.
-
-The lab was subsequently marked as solved.
+> **Note:** Sensitive credentials should be redacted before publishing this evidence in a public portfolio.
 
 ---
 
-## 6. Proof of Exploitation
+## 🔐 Step 5 — Administrator Authentication
 
-The final result confirmed:
+The extracted administrator credentials were used to authenticate through the application's login functionality.
 
-```text
-Authenticated User: administrator
-Lab Status: Solved
-```
-
-Evidence:
-
-`screenshots/06-lab-solved.png`
+The administrator account was successfully accessed.
 
 ---
 
-## Evidence
+## ⚠️ Impact
 
-### Lab Overview
+Successful exploitation can allow an attacker to:
 
-![Lab Overview](screenshots/01-lab-overview.png)
+- Retrieve sensitive database records
+- Extract usernames and passwords
+- Disclose authentication information
+- Compromise privileged accounts
+- Gain unauthorized administrative access
 
-### Original Request
-
-![Original Request](screenshots/02-original-request.png)
-
-### Column Count Determination
-
-![Column Count Determination](screenshots/03-column-count.png)
-
-### Text-Compatible Column
-
-![Text-Compatible Column](screenshots/04-text-compatible-column.png)
-
-### Credential Extraction
-
-![Credential Extraction](screenshots/05-credential-extraction.png)
-
-> Redact sensitive credential values before publishing the image publicly.
-
-### Lab Solved
-
-![Lab Solved](screenshots/06-lab-solved.png)
+The impact depends on the application's database privileges and the sensitivity of the exposed data.
 
 ---
 
-## Key Technical Concepts
+## 🛡️ Mitigation
 
-This lab demonstrates several important SQL injection concepts:
+Recommended defenses include:
 
-* UNION-based SQL injection
-* Column count enumeration
-* Data type compatibility testing
-* String concatenation
-* Cross-table data retrieval
-* Multi-value extraction through a single column
-* Credential disclosure
-* Authentication compromise
-* Evidence-based vulnerability documentation
+- Use **parameterized queries / prepared statements**
+- Never concatenate untrusted input into SQL statements
+- Apply appropriate server-side input validation
+- Use least-privileged database accounts
+- Avoid exposing detailed database errors
+- Store passwords using strong password hashing
+- Perform regular SQL Injection security testing
 
 ---
 
-## Security Impact
+## 🏁 Result
 
-Successful exploitation demonstrated that an attacker could:
+The `username` and `password` values were successfully retrieved through a single text-compatible UNION output column.
 
-* Manipulate the application's SQL query.
-* Retrieve data from another database table.
-* Extract usernames and passwords.
-* Obtain administrator credentials.
-* Authenticate as an administrator.
+The administrator credentials were used to authenticate successfully, completing the lab.
 
-In a real-world application, this could result in unauthorized access to sensitive application functionality and data.
+<p align="center">
+  <img src="./screenshots/06-lab-solved.png" alt="PortSwigger Lab Solved" width="900">
+</p>
 
----
-
-## Remediation
-
-The primary remediation is to use parameterized queries or prepared statements for all database operations involving user-controlled input.
-
-Additional security controls include:
-
-* Use prepared statements / parameterized queries.
-* Never concatenate untrusted input directly into SQL statements.
-* Implement appropriate server-side input validation.
-* Apply least-privilege database permissions.
-* Avoid exposing detailed database errors.
-* Minimize sensitive information returned in application responses.
-* Store passwords using strong password hashing.
-* Perform regular security testing and code review.
-* Include SQL injection testing in security regression testing.
+**Status:** ✅ Successfully Solved
 
 ---
 
-## Conclusion
+## 🧠 Skills Demonstrated
 
-This lab demonstrated a complete UNION-based SQL injection attack in which multiple database values were retrieved through a single text-compatible output column.
-
-The key technique was concatenating the `username` and `password` fields into one value using the database's string concatenation operator.
-
-The extracted administrator credentials were then used to authenticate successfully, demonstrating the potential impact of SQL injection beyond simple data retrieval.
-
-**Lab Status: Solved**
+- UNION-Based SQL Injection
+- Column Enumeration
+- Data-Type Identification
+- String Concatenation
+- Database Data Extraction
+- Credential Disclosure
+- Burp Suite Repeater
+- Manual Web Application Security Testing
