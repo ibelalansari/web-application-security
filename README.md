@@ -8,97 +8,117 @@
 
 <p align="center">
   <strong>
-    A practical security research and assessment portfolio focused on
-    web application vulnerabilities, security controls, attack surface analysis,
-    manual testing, vulnerability validation, impact assessment, and remediation.
+    A structured Web Application Security portfolio focused on identifying,
+    validating, assessing, and documenting security vulnerabilities across
+    modern web applications.
   </strong>
 </p>
 
 <p align="center">
 
-🔎 Reconnaissance
+🔎 Attack Surface Discovery
 &nbsp; • &nbsp;
-🗺️ Attack Surface Mapping
+🗺️ Application Mapping
+&nbsp; • &nbsp;
+🔐 Authentication
+&nbsp; • &nbsp;
+🛡️ Authorization
+&nbsp; • &nbsp;
+💉 Injection
+&nbsp; • &nbsp;
+🧠 Business Logic
 &nbsp; • &nbsp;
 🧪 Manual Testing
 &nbsp; • &nbsp;
-💥 Vulnerability Validation
-&nbsp; • &nbsp;
-📊 Risk Analysis
+📊 Risk Assessment
 &nbsp; • &nbsp;
 📝 Security Reporting
 &nbsp; • &nbsp;
-🛡️ Remediation
+🔁 Retesting
 
 </p>
 
 ---
 
-## 🎯 Repository Overview
+# 🌐 Web Application Security
 
-This repository represents a structured **Web Application Security assessment and
-vulnerability research framework** built around the **OWASP Top 10**.
+Modern web applications expose complex attack surfaces involving users,
+roles, APIs, business workflows, third-party components, data stores, and
+multiple layers of security controls.
 
-The objective is not simply to demonstrate individual vulnerabilities or
-successful payloads.
+A meaningful security assessment therefore requires more than identifying
+individual payloads or running automated scanners.
 
-The focus is on understanding:
+It requires understanding:
 
-- how an application works
+- how the application works
+- what functionality is exposed
 - where trust boundaries exist
-- how security controls are implemented
-- how those controls can be tested
-- how vulnerabilities can be reproduced
-- how technical impact can be demonstrated
-- how findings can be documented
-- how remediation can be proposed
-- and how fixes can be verified through retesting
+- which security controls protect those boundaries
+- how those controls behave under adversarial input
+- whether security assumptions can be bypassed
+- what an attacker could realistically achieve
+- and how the underlying weakness can be remediated
 
-The repository therefore follows a security assessment lifecycle rather than
-a collection of disconnected vulnerability examples.
+This repository is organized around that complete security perspective.
 
 ---
 
-# 🧭 Security Assessment Lifecycle
+# 🏆 OWASP Top 10 — The Security Foundation
 
-<p align="center">
-  <img src="x100-assets/security-assessment-lifecycle.png"
-       alt="Web Application Security Assessment Lifecycle">
-</p>
+The **OWASP Top 10** provides one of the most widely recognized frameworks
+for discussing critical web application security risks.
 
-The assessment process follows a repeatable security workflow:
+It gives security professionals, developers, engineering teams, organizations,
+and clients a common language for understanding application security
+weaknesses.
+
+This repository uses the **OWASP Top 10 as its primary organizational and
+assessment framework**, connecting vulnerability categories with practical
+security testing, validation, impact analysis, reporting, remediation, and
+retesting.
 
 ```text
-Understand Application
-        │
-        ▼
-Discover Attack Surface
-        │
-        ▼
-Map Endpoints / Inputs / Roles / APIs
-        │
-        ▼
-Identify Security Boundaries
-        │
-        ▼
-Analyze Security Controls
-        │
-        ▼
-Perform Manual Security Testing
-        │
-        ▼
-Validate Vulnerability
-        │
-        ▼
-Assess Technical & Business Impact
-        │
-        ▼
-Document Evidence
-        │
-        ▼
-Recommend Remediation
-        │
-        ▼
-Retest
-        │
-        └───────────────► Security Feedback Loop
+                         OWASP TOP 10
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Security Awareness│
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Risk Identification│
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Security Testing  │
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Vulnerability     │
+                    │ Validation        │
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Impact & Risk     │
+                    │ Assessment        │
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Security Reporting│
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Remediation       │
+                    └─────────┬─────────┘
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │ Retesting         │
+                    └───────────────────┘
