@@ -1,26 +1,31 @@
-# Lab 01 – Hidden Data Retrieval
+# 💉 SQL Injection — Hidden Data Retrieval
 
-## Lab Information
+### PortSwigger Web Security Academy · A05 — Injection
+
+---
+
+## 🧪 Lab Information
 
 | Item | Value |
-|------|-------|
-| Platform | PortSwigger Web Security Academy |
-| Category | SQL Injection |
-| Topic | Hidden Data Retrieval |
-| Difficulty | Apprentice |
-| Status | ✅ Solved |
+|---|---|
+| **Platform** | PortSwigger Web Security Academy |
+| **Category** | SQL Injection |
+| **Topic** | Hidden Data Retrieval |
+| **Difficulty** | Apprentice |
+| **Parameter** | `category` |
+| **Status** | ✅ Solved |
 
 ---
 
-# Objective
+## 🎯 Objective
 
-Exploit a SQL Injection vulnerability in the `category` parameter to retrieve hidden products that should not normally be displayed.
+Exploit a **SQL Injection** vulnerability in the `category` parameter to bypass the application's filtering logic and retrieve products that are not normally displayed.
 
 ---
 
-# Lab Description
+## 🔎 Vulnerability
 
-The application filters products using a SQL query similar to:
+The application uses a SQL query similar to:
 
 ```sql
 SELECT * FROM products
@@ -28,94 +33,114 @@ WHERE category = 'Gifts'
 AND released = 1;
 ```
 
-The application does not properly sanitize user input, allowing SQL Injection.
+The `category` parameter is incorporated into the SQL query without adequate protection, allowing SQL Injection.
+
+**Vulnerability Type:** SQL Injection  
+**Location:** `WHERE` clause  
+**Affected Parameter:** `category`
 
 ---
 
-# Vulnerability
+## 🛠️ Exploitation
 
-**Type**
+### Step 1 — Capture the Request
 
-SQL Injection
+The request was captured using **Burp Suite Proxy / HTTP History**.
 
-**Location**
-
-WHERE Clause
-
-**Parameter**
-
-category
+<p align="center">
+  <img src="./screenshots/01-burp-proxy-history.png" alt="Burp Suite Proxy History" width="900">
+</p>
 
 ---
 
-# Payload
+### Step 2 — Send Request to Repeater
+
+The captured request was sent to **Burp Suite Repeater** for controlled testing.
+
+<p align="center">
+  <img src="./screenshots/02-burp-repeater-request.png" alt="Burp Suite Repeater Request" width="900">
+</p>
+
+---
+
+### Step 3 — Inject the Payload
+
+The following SQL Injection payload was appended to the `category` parameter:
 
 ```sql
 '--
 ```
 
-Final request
+Resulting request:
 
+```http
+GET /filter?category=Gifts'-- HTTP/2
 ```
-GET /filter?category=Gifts'--
-```
+
+<p align="center">
+  <img src="./screenshots/04-sqli-payload.png" alt="SQL Injection Payload" width="900">
+</p>
+
+The `--` sequence comments out the remainder of the SQL statement, effectively removing the original filtering condition.
 
 ---
 
-# Attack Flow
+### Step 4 — Observe the Result
 
-1. Browse the Gifts category.
-2. Capture the request using Burp Suite Proxy.
-3. Send the request to Repeater.
-4. Append `'--` to the category parameter.
-5. Send the request.
-6. Hidden products become visible.
-7. Lab solved.
+The modified request caused the application to return products that were previously hidden by the `released = 1` condition.
 
----
+<p align="center">
+  <img src="./screenshots/03-burp-repeater-render.png" alt="Burp Suite Repeater Response" width="900">
+</p>
 
-# Impact
-
-An attacker can bypass application filtering and access sensitive or hidden data.
+This confirms successful SQL Injection and filter bypass.
 
 ---
 
-# Mitigation
+## ⚠️ Impact
 
-- Parameterized Queries
-- Prepared Statements
-- Input Validation
-- Least Privilege Database User
+Successful exploitation may allow an attacker to:
 
----
+- Bypass application filtering
+- Retrieve hidden or restricted data
+- Manipulate database queries
+- Potentially access sensitive database information
 
-# Files
-
-- 01-notes.md
-- 02-payloads/payloads.txt
-- 03-report.md
-- 04-references.md
-- 05-screenshots/
-- 06-burp/
+The overall impact depends on the application's database privileges and the SQL injection context.
 
 ---
 
-# Tools Used
+## 🛡️ Mitigation
 
-- Burp Suite Professional
-- Firefox
-- PortSwigger Web Security Academy
+Recommended defenses include:
+
+- Use **parameterized queries / prepared statements**
+- Avoid dynamically constructing SQL queries from user input
+- Apply appropriate input validation
+- Use a least-privileged database account
+- Implement secure database access layers
+- Perform security testing for SQL Injection during development
 
 ---
 
-# Result
+## 🏁 Result
 
-✅ Successfully solved the lab.
+The SQL Injection vulnerability was successfully exploited to bypass the application's filtering mechanism and retrieve hidden products.
 
-## Skills Demonstrated
+<p align="center">
+  <img src="./screenshots/05-lab-solved.png" alt="PortSwigger Lab Solved" width="900">
+</p>
+
+**Status:** ✅ Successfully Solved
+
+---
+
+## 🧠 Skills Demonstrated
 
 - SQL Injection Testing
+- HTTP Request Analysis
 - Burp Suite Proxy
 - Burp Suite Repeater
-- HTTP Request Analysis
-- Manual Web Application Testing
+- SQL Query Manipulation
+- Input Validation Analysis
+- Web Application Security Testing
