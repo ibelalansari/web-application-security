@@ -1,37 +1,27 @@
-# IDOR — User ID Controlled by Request Parameter
+# 🔐 IDOR — User ID Controlled by Request Parameter
 
 ## Overview
 
-This lab demonstrates an **Insecure Direct Object Reference (IDOR)** vulnerability caused by insufficient server-side authorization checks.
+This lab demonstrates an **Insecure Direct Object Reference (IDOR)**
+vulnerability caused by insufficient server-side authorization controls.
 
-The application uses a user-controlled request parameter to determine which account information is returned. By modifying this parameter while maintaining the same authenticated session, it is possible to access another user's account information.
+The application uses a user-controlled request parameter to identify which
+user account information should be returned. Because the server does not
+properly verify whether the authenticated user is authorized to access the
+requested account, modifying the parameter allows access to another user's
+account information.
 
----
-
-## Lab Information
-
-| Field | Details |
-|---|---|
-| Platform | PortSwigger Web Security Academy |
-| Vulnerability | Insecure Direct Object Reference (IDOR) |
-| Security Category | Broken Access Control |
-| Lab | User ID controlled by request parameter |
-| Difficulty | Apprentice |
-| Tool | Burp Suite Professional |
-| Testing Method | Manual request manipulation |
-| Status | Solved |
+This is a classic **Broken Access Control** scenario where authentication is
+present, but authorization enforcement is insufficient.
 
 ---
 
-## Objective
+## 🎯 Lab Objective
 
-Access another user's account information by manipulating the user-controlled `id` request parameter.
+Access another user's account information by manipulating the user-controlled
+`id` request parameter while maintaining the existing authenticated session.
 
----
-
-## Vulnerability Description
-
-The application determines the requested account using a value supplied by the client:
+### Target Request
 
 ```http
 GET /my-account?id=wiener HTTP/2
