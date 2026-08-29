@@ -10,7 +10,7 @@ This lab demonstrates an **Insecure Direct Object Reference (IDOR)** vulnerabili
 
 The application uses a client-controlled `id` request parameter to determine which user's account information is returned.
 
-Although the application correctly authenticates the user, it fails to properly verify whether that authenticated user is authorized to access the requested account object.
+Although the application correctly authenticates the user, it fails to verify whether the authenticated user is authorized to access the requested account.
 
 By modifying the `id` parameter while maintaining the same authenticated session, another user's account information can be accessed.
 
