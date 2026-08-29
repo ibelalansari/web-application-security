@@ -1,7 +1,0 @@
-GET /filter?category=Gifts HTTP/2
-
-Host: <academy-lab-host>
-
-Parameter
-
-category=Gifts
