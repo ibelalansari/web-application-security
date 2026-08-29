@@ -1,0 +1,10 @@
+HTTP/2 200 OK
+
+Retrieved Data
+
+administrator
+<password>
+
+Used the extracted administrator credentials to authenticate.
+
+Lab solved successfully.

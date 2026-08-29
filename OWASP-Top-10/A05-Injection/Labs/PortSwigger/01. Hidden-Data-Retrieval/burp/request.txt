@@ -1,0 +1,2 @@
+GET /filter?category=Gifts HTTP/2
+Host: <academy-host>
