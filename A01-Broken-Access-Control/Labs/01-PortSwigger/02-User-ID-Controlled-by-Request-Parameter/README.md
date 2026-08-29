@@ -98,7 +98,7 @@ The legitimate request contained the following object reference:
 GET /my-account?id=wiener HTTP/2
 ```
 
-## 📸 Evidence — Burp Suite HTTP History
+### 📸 Evidence — Burp Suite HTTP History
 
 <p align="center">
   <img src="./screenshots/01-burp-http-history-wiener-request.png" alt="Burp Suite HTTP History - Wiener Request" width="900">
@@ -118,7 +118,7 @@ The original request was:
 GET /my-account?id=wiener HTTP/2
 ```
 
-## 📸 Evidence — Burp Suite Repeater
+### 📸 Evidence — Burp Suite Repeater
 
 <p align="center">
   <img src="./screenshots/02-repeater-wiener-request.png" alt="Burp Suite Repeater - Wiener Request" width="900">
@@ -144,7 +144,7 @@ carlos
 
 The authentication context was not changed.
 
-Modified request:
+The modified request was:
 
 ```http
 GET /my-account?id=carlos HTTP/2
@@ -160,7 +160,7 @@ The modified request returned information belonging to the `carlos` account.
 
 The response exposed sensitive account information, including the user's API key.
 
-## 📸 Evidence — Unauthorized Carlos Response
+### 📸 Evidence — Unauthorized Carlos Response
 
 <p align="center">
   <img src="./screenshots/03-repeater-carlos-response-api-key.png" alt="Burp Suite Repeater - Carlos Response and API Key" width="900">
@@ -174,7 +174,7 @@ The successful response confirms that the application accepted a user-controlled
 
 The unauthorized access was successfully validated and the PortSwigger lab was completed.
 
-## 📸 Evidence — Lab Solved
+### 📸 Evidence — Lab Solved
 
 <p align="center">
   <img src="./screenshots/04-lab-solved.png" alt="PortSwigger Lab Solved" width="900">
@@ -353,40 +353,6 @@ User A + User B Object → ❌ Access Denied
 | API Key Exposure | ✅ Confirmed |
 | Exploitation Complexity | Low |
 | Lab Status | ✅ Solved |
-
----
-
-# 📸 Evidence Summary
-
-## 01 — Burp Suite HTTP History
-
-<p align="center">
-  <img src="./screenshots/01-burp-http-history-wiener-request.png" alt="Burp Suite HTTP History - Wiener Request" width="900">
-</p>
-
----
-
-## 02 — Burp Suite Repeater
-
-<p align="center">
-  <img src="./screenshots/02-repeater-wiener-request.png" alt="Burp Suite Repeater - Wiener Request" width="900">
-</p>
-
----
-
-## 03 — Unauthorized Carlos Response
-
-<p align="center">
-  <img src="./screenshots/03-repeater-carlos-response-api-key.png" alt="Burp Suite Repeater - Carlos Response and API Key" width="900">
-</p>
-
----
-
-## 04 — PortSwigger Lab Solved
-
-<p align="center">
-  <img src="./screenshots/04-lab-solved.png" alt="PortSwigger Lab Solved" width="900">
-</p>
 
 ---
 
