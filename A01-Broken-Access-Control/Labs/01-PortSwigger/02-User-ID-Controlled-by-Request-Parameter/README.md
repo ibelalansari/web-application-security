@@ -1,54 +1,65 @@
-# IDOR — User ID Controlled by Request Parameter
+# 🔐 IDOR — User ID Controlled by Request Parameter
 
-## Overview
+### PortSwigger Web Security Academy · A01 — Broken Access Control
+
+---
+
+## 📌 Overview
 
 This lab demonstrates an **Insecure Direct Object Reference (IDOR)** vulnerability caused by insufficient server-side authorization controls.
 
-The application uses a user-controlled `id` request parameter to determine which account information is returned. Because the server does not properly verify whether the authenticated user is authorized to access the requested account, modifying the parameter allows access to another user's account information.
+The application uses a client-controlled `id` request parameter to determine which user's account information is returned.
 
-This is a classic **Broken Access Control** scenario where authentication is present, but authorization is insufficient.
+Although the application correctly authenticates the user, it fails to properly verify whether that authenticated user is authorized to access the requested account object.
+
+By modifying the `id` parameter while maintaining the same authenticated session, another user's account information can be accessed.
+
+This is a classic example of **horizontal privilege escalation** caused by broken object-level authorization.
 
 ---
 
-## Lab Information
+## 🎯 Objective
+
+The objective of this lab is to determine whether an authenticated user can access another user's account information by manipulating a user-controlled object identifier.
+
+The assessment focuses on:
+
+- Identifying the account endpoint
+- Identifying the object reference
+- Capturing the authenticated request
+- Establishing a legitimate baseline
+- Manipulating the object identifier
+- Maintaining the original authentication context
+- Analyzing the server response
+- Validating unauthorized object access
+- Assessing the security impact
+- Identifying the root cause
+- Recommending remediation
+- Defining a retesting strategy
+
+---
+
+## 🧪 Lab Information
 
 | Field | Details |
 |---|---|
-| Platform | PortSwigger Web Security Academy |
-| Vulnerability | Insecure Direct Object Reference (IDOR) |
-| Security Category | Broken Access Control |
-| Lab | User ID controlled by request parameter |
-| Difficulty | Apprentice |
-| Tool | Burp Suite Professional |
-| Testing Method | Manual request manipulation |
-| Authentication | Authenticated session |
-| Status | Solved |
+| **Platform** | PortSwigger Web Security Academy |
+| **Lab** | User ID controlled by request parameter |
+| **Vulnerability** | Insecure Direct Object Reference (IDOR) |
+| **OWASP Category** | A01 — Broken Access Control |
+| **Vulnerability Type** | Broken Object-Level Authorization |
+| **Difficulty** | Apprentice |
+| **Primary Tool** | Burp Suite Professional |
+| **Testing Method** | Manual Request Manipulation |
+| **Authentication** | Authenticated Session |
+| **Affected Functionality** | User Account |
+| **Status** | ✅ Solved |
 
 ---
 
-## Objective
+# 🔎 Attack Surface Identification
 
-The objective of this lab is to identify and exploit an authorization flaw where the application trusts a user-controlled `id` parameter.
-
-The goal is to:
-
-1. Identify how the application references user accounts.
-2. Capture the authenticated request.
-3. Identify the object reference used by the application.
-4. Modify the `id` parameter.
-5. Determine whether another user's information can be accessed.
-6. Validate the authorization failure.
-7. Document the evidence and security impact.
-
----
-
-## Vulnerability Description
-
-The application uses a request parameter to identify the account being requested.
-
-For example:
+The vulnerable functionality is the authenticated account endpoint:
 
 ```http
 GET /my-account?id=wiener HTTP/2
-Host: vulnerable-application.net
-Cookie: session=...
