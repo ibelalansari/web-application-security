@@ -3,7 +3,7 @@
 ### Security Assessment • Vulnerability Research • Penetration Testing
 
 <p align="center">
-  <img src="02-assets/github-banner.png" alt="Web Application Security">
+  <img src="x100-assets/github-banner.png" alt="Web Application Security">
 </p>
 
 <p align="center">
@@ -62,7 +62,7 @@ a collection of disconnected vulnerability examples.
 # 🧭 Security Assessment Lifecycle
 
 <p align="center">
-  <img src="02-assets/security-assessment-lifecycle.png"
+  <img src="x100-assets/security-assessment-lifecycle.png"
        alt="Web Application Security Assessment Lifecycle">
 </p>
 
